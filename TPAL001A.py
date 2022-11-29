@@ -883,6 +883,12 @@ def elegir_palabra(longitud):
 
 def nueva_partida_multijugador():
 
+    # crear_ventana_de_inicio()
+    jugadores = asignar_turnos_a_todos_los_jugadores()
+    print(jugadores.items())
+
+    
+
 
     return None
 
@@ -901,5 +907,4 @@ def submain():
 ##########---------------------------------------------
 
 
-lista_laffont = jugadores_lautaro()
-print(lista_laffont)
+nueva_partida_multijugador()
