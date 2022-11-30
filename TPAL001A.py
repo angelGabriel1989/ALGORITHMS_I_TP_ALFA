@@ -984,7 +984,7 @@ def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, let
     Creada por GB 
     """
 
-    registro = open("00- puntajes_juego.csv", "w")
+    registro = open("00- puntajes_juego.csv", "r+")
     # Leer títulos
     linea = registro.readline()
 
