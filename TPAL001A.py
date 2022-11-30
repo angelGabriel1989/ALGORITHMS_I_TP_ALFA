@@ -1,7 +1,6 @@
 from random import randint
 
 
-
 def validez_longitud():
     """
     Función:
@@ -14,12 +13,12 @@ def validez_longitud():
     """
     longitud = input("Ingrese longitud de la palabra que desea adivinar: ")
 
-    i = 0
-    while i != 1:
-        if longitud == "":
-            i = 1
-        while longitud == str(0) or not longitud.isnumeric():
-            longitud = input("Error. Ingrese longitud de la palabra que desea adivinar: ")
+    while longitud == str(0) or not longitud.isnumeric() and longitud != "":
+        longitud = input("Error. Ingrese longitud de la palabra que desea adivinar: ")
+
+    if longitud.isnumeric():
+        if int(longitud) < 5:
+            longitud = ""
 
     return longitud
 
@@ -895,7 +894,8 @@ def nueva_partida_multijugador():
     print(jugadores.items())
     longitud = validez_longitud()
     if longitud == "": 
-        longitud = int(randint(1,9))
+        longitud = int(randint(5,9))
+    print(f"la longitud es {longitud}")
     palabra = elegir_palabra(longitud)
 
     return None
