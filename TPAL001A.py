@@ -875,9 +875,8 @@ def quienJuegaPrimero(lista):
 
 
 ###########---------------------------------------------- NUEVA PARTE DEL CODIGO ----------------------------------------------- #############
-###########------------------------------------------- HAY QUE DESARROLLAR INTERFAZ ----------------------------------------------- #############
-
-
+###########------------------------------------------- HAY QUE DESARROLLAR INTERFAZ -------------------------------------------- #############
+###########------------------------------------------- FUNCIONES DE ETAPA 8 Y 9 ------------------------------------------------ #############
 
 def elegir_palabra(longitud):
     "Gabriel Barros"
@@ -887,7 +886,7 @@ def elegir_palabra(longitud):
     return palabraElegida
 
 
-def nueva_partida_multijugador():
+def ingresar_etapa_ocho():
 
     # crear_ventana_de_inicio()
     jugadores = asignar_turnos_a_todos_los_jugadores()
@@ -902,7 +901,7 @@ def nueva_partida_multijugador():
 
     definir_nombre_variable = consolidar_posiciones_y_palabras(jugadores, longitud)
 
-    return None
+    return definir_nombre_variable
 
 def consolidar_posiciones_y_palabras(jugadores, longitud):
     """
@@ -911,8 +910,6 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
     """
     import random
     dicc_valido = diccionarValido() # esta función es la que me retorna palabras candidatas
-
-
 
     # print(f"{longitud} tipo: {type(longitud)}")
 
@@ -929,10 +926,9 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
         else:
             i += 1
 
-    print(f"diccionario recortado quedo : {dicc_truncado}")        
+    # print(f"diccionario recortado quedo : {dicc_truncado}")        
   
     palabras_elegidas = random.sample(dicc_truncado, numero_jugadores)
-
     print(f"las palabras elegidas son: {palabras_elegidas}")
 
     devolver = {}
@@ -942,10 +938,17 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
         devolver[clave] = (jugadores[i], palabras_elegidas[acceso])
 
         acceso += 1
-
-    print(devolver)
-   
+    # print(f"El retorno de está función es: {devolver}")   
     return devolver
+
+####################### ------------------------------------------COMENZANDO ETAPA 9-------------------------------------- ##################################
+
+def correr_etapa_9():
+    "crear_ventana_de_inicio()"
+    # Cuando noelia pulsa ingresar, ese boton tiene que devolverme un TRUE Una llave, algo de acceso para entrar a:
+    nombres_posiciones_palabraClave = ingresar_etapa_ocho()
+    print(nombres_posiciones_palabraClave)
+
 
 
 
@@ -1007,7 +1010,9 @@ def jugar_multijugador_desde_0():
     return puntaje
 
 
-##########---------------------------------------------
+##########--------------------------------------------- BLOQUE QUE SERIA EL NUEVO MAIN ------------------------------------- #############################
 
-nueva_partida_multijugador()
+# ingresar_etapa_ocho()
 # correción etapa ocho 18.14
+
+correr_etapa_9()
