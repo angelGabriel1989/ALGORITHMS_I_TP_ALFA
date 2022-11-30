@@ -557,7 +557,7 @@ def crear_ventana_de_inicio():
     boton_ingresar.pack()
     boton_ingresar.place(x=30,y=140)
     #Boton Iniciar partida
-    boton_iniciar_partida = Button(ventana_principal,text="Iniciar partida",command= asignar_turnos_a_todos_los_jugadores)
+    boton_iniciar_partida = Button(ventana_principal,text="Iniciar partida")
     boton_iniciar_partida.pack()
     boton_iniciar_partida.place(x=90,y=140)
     #Boton Registrarse
@@ -690,7 +690,7 @@ def validar_entrada_nombre_usuario_nuevo():
     linea=" "
     validacion_entrada_nombre_usuario_nuevo=validar_nombre_jugador_nuevo()
     if info_nombre_usuario_nuevo != "":
-        archivo=open("C:\\Codigo\\Repositorio Git\\ALGORITHMS_I_TP_ALFA\\00- registros.csv", "r")
+        archivo=open("00- registros.csv", "r")
         linea=archivo.readline()
         while linea != "" and (not usuario_a_registrar):
             linea=archivo.readline()
@@ -734,7 +734,7 @@ def validar_usuario_nombre_y_clave_registrado():
     clave_registrada=False
     linea=" "
     if nombre_usuario_registrado != "" and clave_usuario_registrado != "":
-        archivo=open("C:\\Codigo\\Repositorio Git\\ALGORITHMS_I_TP_ALFA\\00- registros.csv", "r")
+        archivo=open("00- registros.csv", "r")
         while linea != "" and (not usuario_registrado):
             linea=archivo.readline()
             if linea != "":
@@ -767,11 +767,11 @@ def validar_usuario_nombre_y_clave_registrado():
 def ingresar_usuarios_a_la_sala_de_juego(nombre_jugador):
     #Esta funcion (cuando todo esta bien validado) guarda el nombre del usuario en un archivo csv y a mediada que ingresan mas jugadores se sigue guardando
     lista_jugador=[nombre_jugador]
-    with open("C:\\Codigo\\Repositorio Git\\ALGORITHMS_I_TP_ALFA\\00- ingresos.csv","a",newline="") as file:
+    with open("00- ingresos.csv","a",newline="") as file:
         writer=csv.writer(file,delimiter=",")
         writer.writerow(lista_jugador)
     contador_jugadores=0
-    with open("C:\\Codigo\\Repositorio Git\\ALGORITHMS_I_TP_ALFA\\00- ingresos.csv", "r",newline="") as file:
+    with open("00- ingresos.csv", "r",newline="") as file:
         linea = file.readline()
         while linea != "":
             contador_jugadores=contador_jugadores+ 1
@@ -784,7 +784,7 @@ def ingresar_usuarios_a_la_sala_de_juego(nombre_jugador):
 def contar_jugadores():
     #Cuenta la cantidad de jugadores que ingresaron a la sala de juego una vez que se presiono el boton iniciar partida
     contador_jugadores=0
-    with open("C:\\Codigo\\Repositorio Git\\ALGORITHMS_I_TP_ALFA\\00- ingresos.csv", "r",newline="") as file:
+    with open("00- ingresos.csv", "r",newline="") as file:
         linea = file.readline()
         while linea != "":
             contador_jugadores=contador_jugadores+ 1
@@ -800,7 +800,7 @@ def asignar_turnos_a_todos_los_jugadores():
     diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas={}
     import random 
     lista_aleatorios_unicos=random.sample(lista_de_turnos,len(lista_de_turnos))
-    with open("C:\\Codigo\\Repositorio Git\\ALGORITHMS_I_TP_ALFA\\00- ingresos.csv", "r",newline="") as file:
+    with open("00- ingresos.csv", "r",newline="") as file:
         linea = file.readline()
         while linea != "":
             nombre_jugador_1=str(linea.rstrip())
@@ -893,8 +893,6 @@ def nueva_partida_multijugador():
     return None
 
 
-
-
 def submain():
     "Gabriel Barros"
     longitud = int(validez_longitud())
@@ -905,6 +903,5 @@ def submain():
     
 
 ##########---------------------------------------------
-
 
 nueva_partida_multijugador()

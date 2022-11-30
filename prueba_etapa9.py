@@ -1,8 +1,3 @@
-
-
-
-
-
 def lineas(archivo):
     linea = archivo.readline()
     if linea:
@@ -12,11 +7,13 @@ def lineas(archivo):
 
     return devolver
 
+
+"""Gabriel Barros"""
 lista = []
-with open("C:\\Users\\agabr\\Documents\\GitHub\\ALGORITHMS_I_TP_ALFA\\prueba_etapa9.csv") as prueba:
+with open("prueba_etapa9.csv") as prueba:
     linea = lineas(prueba)
     max = "999"
-    
+        
 
     while linea[0] != max:
         lista.append((linea[0],int(linea[1])))
