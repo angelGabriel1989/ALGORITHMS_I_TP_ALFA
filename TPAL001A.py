@@ -896,9 +896,58 @@ def nueva_partida_multijugador():
     if longitud == "": 
         longitud = int(randint(5,9))
     print(f"la longitud es {longitud}")
-    palabra = elegir_palabra(longitud)
+    # palabra = elegir_palabra(longitud)
+
+    # PROGRAMA QUE ME IMPRIME LAS POSICIONES Y LAS PALABRAS:
+
+    definir_nombre_variable = consolidar_posiciones_y_palabras(jugadores, longitud)
 
     return None
+
+def consolidar_posiciones_y_palabras(jugadores, longitud):
+    """
+    Función que toma los jugadores y las posiciones y les carga las palabras sin repetir
+    Hecha por G.B
+    """
+    import random
+    dicc_valido = diccionarValido() # esta función es la que me retorna palabras candidatas
+
+
+
+    # print(f"{longitud} tipo: {type(longitud)}")
+
+    numero_jugadores = int(len(jugadores))
+
+    # RECORRIENDO DICCIONARIO Y RECORTANDO PALABRAS CANDIDATAS PARA JUGAR
+    i = 0
+    dicc_truncado = []
+    while i < len(dicc_valido):
+        # print(f"{dicc_valido[i]}, tipo: {type(dicc_valido[i])}")
+        if int(len(dicc_valido[i])) == int(longitud):
+            dicc_truncado.append(dicc_valido[i])
+            i += 1
+        else:
+            i += 1
+
+    print(f"diccionario recortado quedo : {dicc_truncado}")        
+  
+    palabras_elegidas = random.sample(dicc_truncado, numero_jugadores)
+
+    print(f"las palabras elegidas son: {palabras_elegidas}")
+
+    devolver = {}
+    acceso = 0
+    for i in sorted(jugadores, key = lambda i : jugadores[i]):
+        clave = i
+        devolver[clave] = (jugadores[i], palabras_elegidas[acceso])
+
+        acceso += 1
+
+    print(devolver)
+   
+    return devolver
+
+
 
 
 def jugar_multijugador_desde_0():
@@ -961,3 +1010,4 @@ def jugar_multijugador_desde_0():
 ##########---------------------------------------------
 
 nueva_partida_multijugador()
+# correción etapa ocho 18.14

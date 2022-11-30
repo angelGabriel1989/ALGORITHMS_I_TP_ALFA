@@ -325,7 +325,7 @@ def registrar_usuarios_nuevos(datos_nombre_usuario_nuevo,datos_clave_usuario_nue
     entrada_clave_nueva.delete(0,END)
     entrada_clave_nueva_otra_vez.delete(0,END)
 
-# print(crear_ventana_de_inicio())
+print(crear_ventana_de_inicio())
 
 
 #Hecho por noelia
