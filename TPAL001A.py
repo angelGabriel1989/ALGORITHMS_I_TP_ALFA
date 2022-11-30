@@ -943,11 +943,60 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
 
 ####################### ------------------------------------------COMENZANDO ETAPA 9-------------------------------------- ##################################
 
+####################### ------------------------------------------COMENZANDO ETAPA 9-------------------------------------- ##################################
+
+####################### ------------------------------------------COMENZANDO ETAPA 9-------------------------------------- ##################################
+
+####################### ------------------------------------------COMENZANDO ETAPA 9-------------------------------------- ##################################
+
+####################### ------------------------------------------COMENZANDO ETAPA 9-------------------------------------- ##################################
+
+
 def correr_etapa_9():
     "crear_ventana_de_inicio()"
     # Cuando noelia pulsa ingresar, ese boton tiene que devolverme un TRUE Una llave, algo de acceso para entrar a:
+
     nombres_posiciones_palabraClave = ingresar_etapa_ocho()
     print(nombres_posiciones_palabraClave)
+
+    # inicializó contadores 
+    puntos = letras_buenas = letras_malas = "0"
+    inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
+
+    # cargando los registros para poder inicializar el juego.
+
+
+
+
+def lineas(archivo):
+    linea = archivo.readline()
+    if linea:
+        devolver = linea.rstrip("\n").split(",")
+    else:
+        devolver = ["999", ""]
+
+    return devolver
+
+
+def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, letras_M):
+    """
+    Función que carga : posicion,jugador,palabra_elegida,puntos,letras_buenas,letras_malas en un csv para poder jugar la interfaz
+    Creada por GB 
+    """
+
+    registro = open("00- puntajes_juego.csv", "w")
+    # Leer títulos
+    linea = registro.readline()
+
+    # Escribir en el archivo según ordenamiento establecido en el contrato de la función
+    for i in sorted(nombres_pos_palabraClave, key = lambda i : nombres_pos_palabraClave[i]):
+        registro.write(f"{nombres_pos_palabraClave[i][0]},{i},{nombres_pos_palabraClave[i][1]},{puntos},{letras_B},{letras_M}\n")
+
+    print(nombres_pos_palabraClave)
+
+    registro.close()
+    return None
+
 
 
 
