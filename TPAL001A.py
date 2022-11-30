@@ -968,15 +968,6 @@ def correr_etapa_9():
 
 
 
-def lineas(archivo):
-    linea = archivo.readline()
-    if linea:
-        devolver = linea.rstrip("\n").split(",")
-    else:
-        devolver = ["999", ""]
-
-    return devolver
-
 
 def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, letras_M):
     """
@@ -997,6 +988,49 @@ def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, let
     registro.close()
     return None
 
+def jugar_multilinea():
+    """
+    Funcion que hace jugar al jugador en función a su posición
+    hecha por GB
+    """
+    registro = open("00- puntajes_juego.csv")
+    
+    i = True
+
+    while i != True:
+        pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
+        max = "999"
+        while pos != max:
+            jugar_multijugador_desde_0()
+
+        pass
+
+
+    return None
+
+
+def lineas(archivo):
+    linea = archivo.readline()
+    if linea:
+        devolver = linea.rstrip("\n").split(",")
+    else:
+        devolver = ["999","","","","",""]
+
+    return devolver
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1011,12 +1045,12 @@ def jugar_multijugador_desde_0():
     letrasMalas = letrasBuenas = ""
     # letrasBuenas = ""
     cant_intentos = 7
-    puntos_por_acierto = 10
-    puntos_por_desaciertos = -5
-    longitud = int(validez_longitud())
-    lista_diccionario = diccionarValido()
-    lista_Igualdad_Caracteres = eligePorCantidad(longitud, lista_diccionario)
-    palabraElegida = randomPalabraElegida(lista_Igualdad_Caracteres)
+    puntos_por_acierto = 2
+    puntos_por_desaciertos = -1
+    longitud = int(validez_longitud()) ######## YA NO VALIDO LONGITUD YA VIENE ESCRITA #########
+    lista_diccionario = diccionarValido() ####### YA NO VALIDO DICCIONARIO 
+    lista_Igualdad_Caracteres = eligePorCantidad(longitud, lista_diccionario) ## YA NO VALIDO ESTA FUNCION 
+    palabraElegida = randomPalabraElegida(lista_Igualdad_Caracteres) #### YA NO VALIDO ESTA FUNCION
     puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
     muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
 
