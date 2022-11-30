@@ -881,6 +881,7 @@ def elegir_palabra(longitud):
     palabraElegida = randomPalabraElegida(lista_Igualdad_Caracteres)
     return palabraElegida
 
+
 def nueva_partida_multijugador():
 
     # crear_ventana_de_inicio()
@@ -894,13 +895,78 @@ def nueva_partida_multijugador():
 
 
 def submain():
-    "Gabriel Barros"
+    """
+    Gabriel Barros
+    """
     longitud = int(validez_longitud())
     if longitud == "": 
         longitud = int(randint(1,9))
     
     palabra = elegir_palabra(longitud)
     
+
+
+
+def jugar_multijugador_desde_0():
+    """
+    Gabriel Barros
+    Función que inicializa con el nuevo patrón de juego
+    """
+    errores = aciertos = contador = total_puntajes_ganados = total_puntajes_perdidos = 0
+    # aciertos = 0
+    # contador = 0
+    # total_puntajes_ganados = 0
+    # total_puntajes_perdidos = 0
+    letrasMalas = letrasBuenas = ""
+    # letrasBuenas = ""
+    cant_intentos = 7
+    puntos_por_acierto = 10
+    puntos_por_desaciertos = -5
+    longitud = int(validez_longitud())
+    lista_diccionario = diccionarValido()
+    lista_Igualdad_Caracteres = eligePorCantidad(longitud, lista_diccionario)
+    palabraElegida = randomPalabraElegida(lista_Igualdad_Caracteres)
+    puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
+    muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
+
+    print(f"Palabra a adivinar: {muestraParcial}  Aciertos: {aciertos}  Desaciertos: {errores}")
+    while contador <= cant_intentos:
+
+        salidaLetra = letraValida(letrasBuenas, letrasBuenas)
+        sigueJugando = salidaLetra[1]
+        letra = salidaLetra[0] 
+
+        if sigueJugando:
+
+            esBuena = letraBuena(letra, palabraElegida)
+
+            if esBuena:
+                aciertos += 1
+                total_puntajes_ganados = aciertos * puntos_por_acierto
+                puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
+                letrasBuenas = acumularLetras(letra, letrasBuenas)
+                muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
+                printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
+                contador = ganaPierdo(muestraParcial, palabraElegida, errores,puntaje)
+                    
+            elif letra not in letrasMalas: 
+                errores += 1
+                total_puntajes_perdidos = errores * puntos_por_desaciertos
+                puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
+                contador += 1
+                letrasMalas = acumularLetras(letra, letrasMalas)
+                muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
+                printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
+                contador = ganaPierdo(muestraParcial, palabraElegida, errores,puntaje)
+            else:
+                print("LETRA REPETIDA")
+        else:
+            contador = 10
+            print("\nJUEGO FINALIZADO\n")
+
+
+    return puntaje
+
 
 ##########---------------------------------------------
 
