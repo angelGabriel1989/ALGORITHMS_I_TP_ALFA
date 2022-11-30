@@ -13,8 +13,14 @@ def validez_longitud():
     Precondiciones:
     """
     longitud = input("Ingrese longitud de la palabra que desea adivinar: ")
-    while longitud == str(0) or not longitud.isnumeric():
-        longitud = input("Error. Ingrese longitud de la palabra que desea adivinar: ")
+
+    i = 0
+    while i != 1:
+        if longitud == "":
+            i = 1
+        while longitud == str(0) or not longitud.isnumeric():
+            longitud = input("Error. Ingrese longitud de la palabra que desea adivinar: ")
+
     return longitud
 
 
@@ -887,31 +893,15 @@ def nueva_partida_multijugador():
     # crear_ventana_de_inicio()
     jugadores = asignar_turnos_a_todos_los_jugadores()
     print(jugadores.items())
-
-    
-
+    longitud = validez_longitud()
+    if longitud == "": 
+        longitud = int(randint(1,9))
+    palabra = elegir_palabra(longitud)
 
     return None
 
 
-def submain():
-    """
-    Gabriel Barros
-    """
-    longitud = int(validez_longitud())
-    if longitud == "": 
-        longitud = int(randint(1,9))
-    
-    palabra = elegir_palabra(longitud)
-    
-
-
-
 def jugar_multijugador_desde_0():
-    """
-    Gabriel Barros
-    Función que inicializa con el nuevo patrón de juego
-    """
     errores = aciertos = contador = total_puntajes_ganados = total_puntajes_perdidos = 0
     # aciertos = 0
     # contador = 0
