@@ -792,8 +792,9 @@ def ingresar_usuarios_a_la_sala_de_juego(nombre_jugador):
             contador_jugadores=contador_jugadores+ 1
             linea = file.readline()
             if contador_jugadores == 4:
-                messagebox.showinfo(message="Recuerde que solo se permite el ingreso de hasta 4 jugadores")
-                #disabled en cajas de texto no me sale :(
+                messagebox.showinfo(message="Recuerde que solo se permite el ingreso de hasta 4 jugadores\nA continuacion se bloquearan las cajas de texto")
+                entrada_usuario["state"] = "disabled"
+                entrada_clave["state"] = "disabled"
 
 
 def contar_jugadores():
