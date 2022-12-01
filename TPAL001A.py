@@ -1026,6 +1026,7 @@ def jugar_multilinea():
         contador_posiciones = 0
         while pos != max:
             lista_juego = jugar_multijugador_desde_0(jug, palabra_juego, puntos, letras_b, letras_m, pos) ### PUNTAJE DEBE SER MODIFICADO
+            cargar_datos_puntaje(lista_juego)
             cargar_datos_puntajes_juego(lista_juego) #######################
             #### TENGO QUE LEER PERO SALTEAR AL JUGADOR QUE YA JUGO ### hay que hacer un programa para realizar esa función.
             pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
@@ -1040,6 +1041,11 @@ def jugar_multilinea():
     return None
 
   
+def cargar_datos_puntaje(lista_juego):
+    archivo = open("00- puntajes_juego_parciales", "r") # Si no existe lo crea
+    archivo.close()
+    archivo = open("00- puntajes_juego_parciales", "a")
+    
 
 
 
@@ -1072,6 +1078,8 @@ def lineas(archivo):
 
     return devolver
 # agregando comentario
+
+
 
 def cargar_datos_puntajes_juego(lista):
     """
