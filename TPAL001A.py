@@ -1059,19 +1059,18 @@ def cargar_datos_puntajes_juego(lista):
         linea = lineas(archivo)
     archivo.close()
 
+    print(f"lista maestra: {lista_maestra}")
+
     # ABRO EL ARCHIVO PARA PISARLO
     archivo = open("00- puntajes_juego.csv", "w") ########### 
  
     for i in range (len(lista_maestra)):
-        archivo.write(f"{lista_maestra[0]},{lista_maestra[1]},{lista_maestra[2]},{lista_maestra[3]},{lista_maestra[4]},{lista_maestra[5]}\n")
+        archivo.write(f"{lista_maestra[i][0]},{lista_maestra[i][1]},{lista_maestra[i][2]},{lista_maestra[i][3]},{lista_maestra[i][4]},{lista_maestra[i][5]}\n")
     
     archivo.close()
    
 
-    print(lista_maestra)
-
-
-
+    # print(lista_maestra)
     print(type(pos))
     print("llegaste hasta donde querias")
 
