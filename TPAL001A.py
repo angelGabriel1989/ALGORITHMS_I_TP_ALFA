@@ -1024,7 +1024,9 @@ def jugar_multilinea():
         print(f"{pos}, {jug}")
         max = "999"
         contador_posiciones = 0
-        while pos != max:
+        
+        a = 0
+        while a!= 1:
             lista_juego = jugar_multijugador_desde_0(jug, palabra_juego, puntos, letras_b, letras_m, pos) ### PUNTAJE DEBE SER MODIFICADO
             cargar_datos_puntaje(lista_juego)
             cargar_datos_puntajes_juego(lista_juego) #######################
