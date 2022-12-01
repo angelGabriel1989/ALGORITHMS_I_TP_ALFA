@@ -825,7 +825,8 @@ def asignar_turnos_a_todos_los_jugadores():
     for clave in diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas:
         print(f"El jugador {clave} tiene turno numero {diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas[clave]}")
     print("A jugar!")
-    ventana_principal.destroy()
+    # LINEA COMENTADA GABRIEL BARROS 22.06 hs 30/11/22
+    # ventana_principal.destroy()
     return diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas
     #Aca se importaria lo de la parte uno e inmediatamente abajo de esto llamamos a la funcion jugar
                 
@@ -889,14 +890,6 @@ def quienJuegaPrimero(lista):
 ###########------------------------------------------- HAY QUE DESARROLLAR INTERFAZ -------------------------------------------- #############
 ###########------------------------------------------- FUNCIONES DE ETAPA 8 Y 9 ------------------------------------------------ #############
 
-def elegir_palabra(longitud):
-    "Gabriel Barros"
-    lista_diccionario = diccionarValido()
-    lista_Igualdad_Caracteres = eligePorCantidad(longitud, lista_diccionario)
-    palabraElegida = randomPalabraElegida(lista_Igualdad_Caracteres)
-    return palabraElegida
-
-
 def ingresar_etapa_ocho():
 
     # crear_ventana_de_inicio()
@@ -913,6 +906,14 @@ def ingresar_etapa_ocho():
     definir_nombre_variable = consolidar_posiciones_y_palabras(jugadores, longitud)
 
     return definir_nombre_variable
+
+
+def elegir_palabra(longitud):
+    "Gabriel Barros"
+    lista_diccionario = diccionarValido()
+    lista_Igualdad_Caracteres = eligePorCantidad(longitud, lista_diccionario)
+    palabraElegida = randomPalabraElegida(lista_Igualdad_Caracteres)
+    return palabraElegida
 
 def consolidar_posiciones_y_palabras(jugadores, longitud):
     """
@@ -964,18 +965,29 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
 
 
 def correr_etapa_9():
-    "crear_ventana_de_inicio()"
+    # crear_ventana_de_inicio()
     # Cuando noelia pulsa ingresar, ese boton tiene que devolverme un TRUE Una llave, algo de acceso para entrar a:
 
     nombres_posiciones_palabraClave = ingresar_etapa_ocho()
     # print(nombres_posiciones_palabraClave)
 
+    # limpieza puntaje_usuarios_historico
+    limpieza_archivo()
     # inicializó contadores 
     puntos = letras_buenas = letras_malas = "0"
     inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
     jugar_multilinea()
 
     # cargando los registros para poder inicializar el juego.
+
+    return None
+
+
+def limpieza_archivo():
+    archivo = open("00- puntajes_juego.csv", "w")
+    archivo.close()
+
+    return 
 
 
 
@@ -1015,7 +1027,9 @@ def jugar_multilinea():
         print(f"{pos}, {jug}")
         max = "999"
         while pos != max:
-            puntaje = jugar_multijugador_desde_0(jug, palabra_juego, puntos, letras_b, letras_m) ### PUNTAJE DEBE SER MODIFICADO
+            lista_juego = jugar_multijugador_desde_0(jug, palabra_juego, puntos, letras_b, letras_m, pos) ### PUNTAJE DEBE SER MODIFICADO
+            cargar_datos_puntajes_juego(lista_juego) #######################
+
 
         pass
 
@@ -1031,6 +1045,47 @@ def lineas(archivo):
         devolver = ["999","","","","",""]
 
     return devolver
+
+def cargar_datos_puntajes_juego(lista):
+    """
+    Función que lee 2 veces el archivo, en la primer lectura genera una lista
+    en la segunda lectura pisa los datos coordenados
+    Hecha por GB 
+    """
+    pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas = lista
+
+    lista_maestra = []
+    archivo = open("00- puntajes_juego.csv", "r")
+
+    linea = lineas(archivo)
+    max = "999"
+    while linea[0] != max:
+        if linea[0] == lista[0]:
+            lista_maestra.append(lista)
+        else:
+            lista_maestra.append(linea)
+        linea = lineas(archivo)
+    archivo.close()
+
+    # ABRO EL ARCHIVO PARA PISARLO
+    archivo = open("00- puntajes_juego.csv", "w") ########### 
+ 
+    for i in range (len(lista_maestra)):
+        archivo.write(f"{lista_maestra[0]},{lista_maestra[1]},{lista_maestra[2]},{lista_maestra[3]},{lista_maestra[4]},{lista_maestra[5]}\n")
+    
+    archivo.close()
+   
+
+    print(lista_maestra)
+
+
+
+    print(type(pos))
+    print("llegaste hasta donde querias")
+
+    return None
+
+    
 
 def evaluar_puntaje_incial(letra):
     # me va a dar cero solo la primera vez, hago un bloque para solventarlo
@@ -1048,12 +1103,12 @@ def correccion_letras(letra):
         devolver = ""
     return devolver
 
-def jugar_multijugador_desde_0(jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas):
+def jugar_multijugador_desde_0(jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas, pos):
     aciertos = evaluar_puntaje_incial(letrasBuenas)
-    print(f"len de letras buenas : {aciertos}")
+    # print(f"len de letras buenas : {aciertos}")
 
     errores = evaluar_puntaje_incial(letrasMalas)
-    print(f"len de letras malas : {errores}")
+    #print(f"len de letras malas : {errores}")
 
 
     puntaje_total = int(puntaje_total)
@@ -1062,15 +1117,15 @@ def jugar_multijugador_desde_0(jugador, palabraElegida, puntaje_total, letrasBue
     letrasBuenas = correccion_letras(letrasBuenas)
     letrasMalas = correccion_letras(letrasMalas)
 
-    print(f"letras buenas vale:{letrasBuenas}, letras mala vale:{letrasMalas}.")
+    # print(f"letras buenas vale:{letrasBuenas}, letras mala vale:{letrasMalas}.")
 
     puntos_por_acierto = 2
     total_puntajes_ganados = int(aciertos*(puntos_por_acierto))
-    print(f" total puntos ganados : {total_puntajes_ganados}")
+    # print(f" total puntos ganados : {total_puntajes_ganados}")
 
     puntos_por_desaciertos = -1
     total_puntajes_perdidos = int(errores*(puntos_por_desaciertos))
-    print(f" total puntos perdidos : {total_puntajes_perdidos}")
+    # print(f" total puntos perdidos : {total_puntajes_perdidos}")
     
 
     cant_intentos = 7
@@ -1080,7 +1135,9 @@ def jugar_multijugador_desde_0(jugador, palabraElegida, puntaje_total, letrasBue
     print("ES EL TURNO DE:{0:8}".format(jugador.upper()))
 
     print(f"Palabra a adivinar: {muestraParcial}  Aciertos: {aciertos}  Desaciertos: {errores}")
-    while contador <= cant_intentos:
+    # llave para poder salir del else con la modificación de la parte10
+    llave = False
+    while contador <= cant_intentos and llave != True:
 
         salidaLetra = letraValida(letrasBuenas, letrasMalas)
         sigueJugando = salidaLetra[1]
@@ -1108,14 +1165,20 @@ def jugar_multijugador_desde_0(jugador, palabraElegida, puntaje_total, letrasBue
                 muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
                 printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
                 contador = ganaPierdo(muestraParcial, palabraElegida, errores,puntaje)
+                #### HAY QUE ESCRIBIR UN CODIGO QUE ALMACENE EN UN DICCIONARIO A: 
+                lista_pasar = [str(pos), str(jugador), str(palabraElegida), str(puntaje_total), str(letrasBuenas), str(letrasMalas)]
+                #### pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas
+                llave = True
+
             else:
                 print("LETRA REPETIDA")
         else:
             contador = 10
             print("\nJUEGO FINALIZADO\n")
 
+    #cargar_datos_puntajes_juego(lista_pasar)
 
-    return puntaje
+    return lista_pasar
 
 
 ##########--------------------------------------------- BLOQUE QUE SERIA EL NUEVO MAIN ------------------------------------- #############################
