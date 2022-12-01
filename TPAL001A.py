@@ -962,6 +962,7 @@ def correr_etapa_9():
     # inicializó contadores 
     puntos = letras_buenas = letras_malas = "0"
     inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
+    jugar_multilinea()
 
     # cargando los registros para poder inicializar el juego.
 
@@ -995,17 +996,19 @@ def jugar_multilinea():
     """
     registro = open("00- puntajes_juego.csv")
     
-    i = True
+    i = False
 
     while i != True:
+        print("Ingreso al while")
         pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
+        print(f"{pos}, {jug}")
         max = "999"
         while pos != max:
-            jugar_multijugador_desde_0()
+            puntaje = jugar_multijugador_desde_0(jug, palabra_juego, puntos, letras_b, letras_m) ### PUNTAJE DEBE SER MODIFICADO
 
         pass
 
-
+    registro.close()
     return None
 
 
@@ -1019,45 +1022,29 @@ def lineas(archivo):
     return devolver
 
 
+def jugar_multijugador_desde_0(jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas):
+    aciertos = int(len(letrasBuenas))
+    errores = int(len(letrasMalas))
+    puntaje_total = int(puntaje_total)
+    contador = int(len(letrasMalas))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def jugar_multijugador_desde_0():
-    errores = aciertos = contador = total_puntajes_ganados = total_puntajes_perdidos = 0
-    # aciertos = 0
-    # contador = 0
-    # total_puntajes_ganados = 0
-    # total_puntajes_perdidos = 0
-    letrasMalas = letrasBuenas = ""
-    # letrasBuenas = ""
-    cant_intentos = 7
     puntos_por_acierto = 2
+    total_puntajes_ganados = int(int(len(letrasBuenas))*(puntos_por_acierto))
+
     puntos_por_desaciertos = -1
-    longitud = int(validez_longitud()) ######## YA NO VALIDO LONGITUD YA VIENE ESCRITA #########
-    lista_diccionario = diccionarValido() ####### YA NO VALIDO DICCIONARIO 
-    lista_Igualdad_Caracteres = eligePorCantidad(longitud, lista_diccionario) ## YA NO VALIDO ESTA FUNCION 
-    palabraElegida = randomPalabraElegida(lista_Igualdad_Caracteres) #### YA NO VALIDO ESTA FUNCION
+    total_puntajes_perdidos = int(int(len(letrasMalas))*(puntos_por_desaciertos))
+    
+
+    cant_intentos = 7
     puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
     muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
+
+    print("ES EL TURNO DE:{0:8}".format(jugador.upper()))
 
     print(f"Palabra a adivinar: {muestraParcial}  Aciertos: {aciertos}  Desaciertos: {errores}")
     while contador <= cant_intentos:
 
-        salidaLetra = letraValida(letrasBuenas, letrasBuenas)
+        salidaLetra = letraValida(letrasBuenas, letrasMalas)
         sigueJugando = salidaLetra[1]
         letra = salidaLetra[0] 
 
