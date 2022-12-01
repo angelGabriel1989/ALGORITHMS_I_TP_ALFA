@@ -755,7 +755,7 @@ def validar_usuario_nombre_y_clave_registrado():
         archivo.close()
         if usuario_registrado and clave_registrada:
             ingresar_usuarios_a_la_sala_de_juego(nombre_usuario_registrado)
-            exito_login()
+            messagebox.showinfo(message="Usuario y clave correctos.Si quiere jugar presione <INICIAR PARTIDA>")
             entrada_usuario.delete(0,END)
             entrada_clave.delete(0,END)
         elif not usuario_registrado:
@@ -767,16 +767,6 @@ def validar_usuario_nombre_y_clave_registrado():
     entrada_usuario.delete(0,END)
     entrada_clave.delete(0,END)
 
-def exito_login():
-    global ventana_exito
-    ventana_exito = Toplevel(ventana_principal)
-    ventana_exito.title("Exito")
-    ventana_exito.geometry("300x150")
-    Label(ventana_exito, text=" Usuario y claves correctos y Login finalizado con\nexito.¿Ingresa otro jugador?Presione <OK> para\nagregar otro y mantenerse en la ventana\no <INICIAR PARTIDA PARA COMENZAR A JUGAR>\n").pack()
-    Button(ventana_exito, text="OK", command=borrar_exito_login).pack()
-
-def borrar_exito_login():
-    ventana_exito.destroy()
 
 
 def ingresar_usuarios_a_la_sala_de_juego(nombre_jugador):
