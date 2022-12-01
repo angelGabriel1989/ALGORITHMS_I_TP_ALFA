@@ -929,7 +929,7 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
     # print(f"diccionario recortado quedo : {dicc_truncado}")        
   
     palabras_elegidas = random.sample(dicc_truncado, numero_jugadores)
-    print(f"las palabras elegidas son: {palabras_elegidas}")
+    # print(f"las palabras elegidas son: {palabras_elegidas}")
 
     devolver = {}
     acceso = 0
@@ -957,7 +957,7 @@ def correr_etapa_9():
     # Cuando noelia pulsa ingresar, ese boton tiene que devolverme un TRUE Una llave, algo de acceso para entrar a:
 
     nombres_posiciones_palabraClave = ingresar_etapa_ocho()
-    print(nombres_posiciones_palabraClave)
+    # print(nombres_posiciones_palabraClave)
 
     # inicializó contadores 
     puntos = letras_buenas = letras_malas = "0"
@@ -1021,18 +1021,45 @@ def lineas(archivo):
 
     return devolver
 
+def evaluar_puntaje_incial(letra):
+    # me va a dar cero solo la primera vez, hago un bloque para solventarlo
+    if int(letra):
+        devolver = 0
+    elif letra == "0":
+        devolver = 0
+    else:
+        devolver = int(len(letra))
+    return devolver
+
+def correccion_letras(letra):
+    # corrigiendo bug inicial
+    if letra == "0":
+        devolver = ""
+    return devolver
 
 def jugar_multijugador_desde_0(jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas):
-    aciertos = int(len(letrasBuenas))
-    errores = int(len(letrasMalas))
+    aciertos = evaluar_puntaje_incial(letrasBuenas)
+    print(f"len de letras buenas : {aciertos}")
+
+    errores = evaluar_puntaje_incial(letrasMalas)
+    print(f"len de letras malas : {errores}")
+
+
     puntaje_total = int(puntaje_total)
     contador = int(len(letrasMalas))
 
+    letrasBuenas = correccion_letras(letrasBuenas)
+    letrasMalas = correccion_letras(letrasMalas)
+
+    print(f"letras buenas vale:{letrasBuenas}, letras mala vale:{letrasMalas}.")
+
     puntos_por_acierto = 2
-    total_puntajes_ganados = int(int(len(letrasBuenas))*(puntos_por_acierto))
+    total_puntajes_ganados = int(aciertos*(puntos_por_acierto))
+    print(f" total puntos ganados : {total_puntajes_ganados}")
 
     puntos_por_desaciertos = -1
-    total_puntajes_perdidos = int(int(len(letrasMalas))*(puntos_por_desaciertos))
+    total_puntajes_perdidos = int(errores*(puntos_por_desaciertos))
+    print(f" total puntos perdidos : {total_puntajes_perdidos}")
     
 
     cant_intentos = 7
