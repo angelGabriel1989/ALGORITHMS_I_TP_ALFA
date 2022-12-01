@@ -1032,6 +1032,9 @@ def jugar_multilinea():
             pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
             contador_posiciones += 1
             leer_archivo_con_posicionador(contador_posiciones)
+            if contador_posiciones == contador_personas_jugando:
+                # se corre un programa que pone .seek del archivo puntajes_juegos_parciales en 0
+                posicionar_en_cero()
 
 
 
@@ -1040,12 +1043,19 @@ def jugar_multilinea():
     registro.close()
     return None
 
+def posicionar_en_cero():
+    archivo = open("00- puntajes_juego_parciales.csv")
+    archivo.seek(0)
+    return
   
 def cargar_datos_puntaje(lista_juego):
-    archivo = open("00- puntajes_juego_parciales", "r") # Si no existe lo crea
-    archivo.close()
-    archivo = open("00- puntajes_juego_parciales", "a")
-    
+
+    print(lista_juego)
+    # archivo = open("00- puntajes_juego_parciales", "a")
+    ## ULTIMO CAMBIO
+    # archivo.close()
+    print("has salido")
+    return None
 
 
 
@@ -1134,6 +1144,8 @@ def correccion_letras(letra):
     # corrigiendo bug inicial
     if letra == "0":
         devolver = ""
+    elif letra == "": # ampliación para mejorar bug
+        devolver = "0"
     return devolver
 
 def jugar_multijugador_desde_0(jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas, pos):
