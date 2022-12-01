@@ -1134,12 +1134,16 @@ def cargar_datos_puntajes_juego(lista):
 
 def evaluar_puntaje_incial(letra):
     # me va a dar cero solo la primera vez, hago un bloque para solventarlo
-    if int(letra):
+    try:
+        if int(letra):
+            devolver = 0
+        elif letra == "0":
+            devolver = 0
+        else:
+            devolver = int(len(letra))
+    except:
+        print("upss. no era por acá")
         devolver = 0
-    elif letra == "0":
-        devolver = 0
-    else:
-        devolver = int(len(letra))
     return devolver
 
 def correccion_letras(letra):
