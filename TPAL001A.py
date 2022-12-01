@@ -975,6 +975,10 @@ def correr_etapa_9():
 
 
 def limpieza_archivo():
+    """
+    Programa para poner en blanco un archivo random
+    Hecho por GB
+    """
     archivo = open("00- puntajes_juego.csv", "w")
     archivo.close()
 
@@ -1008,8 +1012,10 @@ def jugar_multilinea():
     Funcion que hace jugar al jugador en función a su posición
     hecha por GB
     """
+    contador_personas_jugando = contar_jugadores()
     registro = open("00- puntajes_juego.csv")
-    
+
+
     i = False
 
     while i != True:
@@ -1017,9 +1023,15 @@ def jugar_multilinea():
         pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
         print(f"{pos}, {jug}")
         max = "999"
+        contador_posiciones = 0
         while pos != max:
             lista_juego = jugar_multijugador_desde_0(jug, palabra_juego, puntos, letras_b, letras_m, pos) ### PUNTAJE DEBE SER MODIFICADO
             cargar_datos_puntajes_juego(lista_juego) #######################
+            #### TENGO QUE LEER PERO SALTEAR AL JUGADOR QUE YA JUGO ### hay que hacer un programa para realizar esa función.
+            pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
+            contador_posiciones += 1
+            leer_archivo_con_posicionador(contador_posiciones)
+
 
 
         pass
@@ -1027,8 +1039,31 @@ def jugar_multilinea():
     registro.close()
     return None
 
+  
+
+
+
+def leer_archivo_con_posicionador(contador):
+
+    """
+    Programa que corrije el bug que se genera al reescribir el archivo 00- puntajes_juego
+    posiciona la linea de parametros según corresponda el orden
+    Hecho por GB
+    """
+    archivo = open("00- puntajes_juego.csv", "r+")
+
+    for i in range (contador):
+        linea = archivo.readline()
+    archivo.close()
+
+    return None
+
 
 def lineas(archivo):
+    """
+    Programa que lee los archivos
+    Hecho por GB
+    """
     linea = archivo.readline()
     if linea:
         devolver = linea.rstrip("\n").split(",")
@@ -1069,10 +1104,9 @@ def cargar_datos_puntajes_juego(lista):
     
     archivo.close()
    
-
     # print(lista_maestra)
-    print(type(pos))
-    print("llegaste hasta donde querias")
+    # print(type(pos))
+    # print("llegaste hasta donde querias")
 
     return None
 
