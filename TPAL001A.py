@@ -1273,6 +1273,8 @@ def correccion_letras(letra):
     return devolver
 
 def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas):
+
+    print(" Los valores son: {0}, {1}, {2}, {3}, {4}, {5}".format(pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas))
     aciertos = evaluar_puntaje_incial(letrasBuenas)
     errores = evaluar_puntaje_incial(letrasMalas)
     contador = int(len(letrasMalas))
@@ -1312,12 +1314,14 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
 
             if esBuena:
                 aciertos += 1
-                total_puntajes_ganados = aciertos * puntos_por_acierto
+                total_puntajes_ganados = int(aciertos * puntos_por_acierto)
                 puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
                 letrasBuenas = acumularLetras(letra, letrasBuenas)
                 muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
                 printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
                 contador = ganaPierdo_multilinea(muestraParcial, palabraElegida, errores,puntaje)
+                pos,jugador, palabraElegida, puntaje, letrasBuenas, letrasMalas
+                print(f"El puntaje total es: {puntaje}")
                 
                     
             elif letra not in letrasMalas: 
@@ -1331,7 +1335,7 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
                 contador = ganaPierdo_multilinea(muestraParcial, palabraElegida, errores,puntaje)
                 #### HAY QUE ESCRIBIR UN CODIGO QUE ALMACENE EN UN DICCIONARIO A: 
                 lista_pasar = [str(pos), str(jugador), str(palabraElegida), str(puntaje_total), str(letrasBuenas), str(letrasMalas)]
-                #### pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas
+                pos,jugador, palabraElegida, puntaje, letrasBuenas, letrasMalas
                 llave = True
 
             else:
@@ -1342,8 +1346,6 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
             contador = 10
             print("HAS ABANDONADO LA PARTIDA \n")
     
-
-
 
     return lista_pasar
 
@@ -1357,13 +1359,16 @@ def ganaPierdo_multilinea(muestraParcial, palabraAhorcado, contadorErrores,punta
         print(f"\nHAS GANADO! SU PUNTAJE ES: {puntaje}\n")
         # nueva_partida(puntaje)
     elif contadorErrores == 8:
-        print(f"\nPERDISTE! SU PUNTAJE ES: {puntaje}\n\n")
+        print(f"\nPERDISTE! SU PUNTAJE ES: {puntaje}\n")
+        print(puntaje)
         puntaje = int(puntaje) - 5
     else:
         pass
     return contadorErrores
 
-def agregar_gandores_perdedores(contador, lista_pasar)
+def agregar_gandores_perdedores(contador, lista_pasar):
+
+    return None
 
 
 
