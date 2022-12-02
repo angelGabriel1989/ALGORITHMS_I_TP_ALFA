@@ -1,5 +1,7 @@
 from random import randint
-
+import platform
+import os
+import time
 
 def validez_longitud():
     """
@@ -820,10 +822,21 @@ def asignar_turnos_a_todos_los_jugadores():
     print("A jugar!")
     # LINEA COMENTADA GABRIEL BARROS 22.06 hs 30/11/22
     # ventana_principal.destroy()
+
+    # limpiar_pantalla()
+
+
     return diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas
     #Aca se importaria lo de la parte uno e inmediatamente abajo de esto llamamos a la funcion jugar
                 
-    
+def limpiar_pantalla():
+    time.sleep(0.5)
+
+    if platform.system() == 'windows':
+        os.system('cls')
+    else:
+        os.system('clear')
+    return None    
 
 
 def validar_entradas_claves_nuevas():
@@ -1071,7 +1084,7 @@ def eliminar_perfil_jugador(lista):
 
     print(f"La lista de nombres es: {lista_jugadores}")
 
-    with open("00- ingresos_borrador.csv", "w") as file:
+    with open("00- ingresos.csv", "w") as file:
         for i in range (len(lista_jugadores)):
             
             if lista_jugadores[i] == jugador_eliminado:
@@ -1285,7 +1298,7 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
     puntaje_total =  total_puntajes_ganados - total_puntajes_perdidos
 
     cant_intentos = 7
-    puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
+    puntaje = Asignacion_Puntajes(total_puntajes_ganados, total_puntajes_perdidos)
     muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
 
     print("ES EL TURNO DE:{0:8}".format(jugador.upper()))
@@ -1312,6 +1325,7 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
                 muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
                 printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
                 contador = ganaPierdo(muestraParcial, palabraElegida, errores,puntaje)
+                
                     
             elif letra not in letrasMalas: 
                 errores += 1
@@ -1331,13 +1345,31 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
                 print("LETRA REPETIDA")
         else:
             pos = "0"
-            print("\nJUEGO FINALIZADO\n")
+            print(f"\nSALE {jugador} DE LA PARTIDA! \n")
             lista_pasar = [f"{pos}",f"{str(jugador)}",f"{str(palabraElegida)}",f"{str(puntaje_total)}",f"{str(letrasBuenas)}",f"{str(letrasMalas)}"]
             print(f"La salida es: {lista_pasar}")
             contador = 10
     # SE REALIZA UNA MODIFICACION AL RETORNO PARA PODER ESCAPAR
 
     return lista_pasar
+
+
+
+def ganaPierdo_multilinea(muestraParcial, palabraAhorcado, contadorErrores,puntaje):
+
+    if muestraParcial == palabraAhorcado:
+        contadorErrores = 9
+        print(f"\nHAS GANADO! SU PUNTAJE ES: {puntaje}\n")
+        # nueva_partida(puntaje)
+    elif contadorErrores == 8:
+        print(f"\nPERDISTE! SU PUNTAJE ES: {puntaje}\n\n")
+        # nueva_partida(puntaje)
+    elif contadorErrores == 10:
+        print("HAS ABANDONADO LA PARTIDA\n")
+    else:
+        pass
+    return contadorErrores
+
 
 
 ##########--------------------------------------------- BLOQUE QUE SERIA EL NUEVO MAIN ------------------------------------- #############################
