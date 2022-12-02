@@ -1035,6 +1035,7 @@ def jugar_multijugador():
     # archivo ="00- puntajes_juego.csv"
 
     while llave_2 != True:
+        contador_personas_jugando = contar_jugadores()
         linea= capturar_linea(renglon)
         pos, jug, palabra_juego, puntos, letras_b, letras_m  = linea
 
@@ -1062,16 +1063,23 @@ def jugar_multijugador():
                 llave_2 = True
             elif devolver_puntos[6] == "Perdió": # En este caso continua el juego, se almacena en una memoria los datos del que perdió.
                 ### Instrucción de bloque de código que permita eliminar al jugador y almacenar los datos en la memoria
+                eliminar_perfil_jugador(devolver_puntos)
+                contador_personas_jugando -= 1
                 pass
             else: #Seria el caso que abandonó  
 
                 if devolver_puntos[0] == "0":
                     print("ELIMINANDO PERFIL")
                     eliminar_perfil_jugador(devolver_puntos)
+                    contador_personas_jugando -= 1
                     pass
+        
+        if contador_personas_jugando == 0:
+            lista_podios, podio = cargar_datos_ganador()
+            gano_maquina(lista_podios, podio)
 
-        # contador_personas_jugando = contar_jugadores()
-         
+            llave_2 = True
+
         renglon += 1
       
     return None
@@ -1102,13 +1110,7 @@ def cargar_datos_ganador(): # PODRIA RECIBIR UN PARAMETRO CON UN BLOQUE IF
 
 def imprimir_ganador(puntos, podio):
 
-    # print(type(puntos))
-    # print(puntos)
-    # print(type(podio))
-    # print(podio)
-
     valor = -100
-    #alor_maximo = 0
 
     for i in puntos:
         if int(i) > valor:
@@ -1124,6 +1126,20 @@ def imprimir_ganador(puntos, podio):
     
     return None 
 
+def gano_maquina(puntos,podio):
+    print("LA MAQUINA HA GANADO \n Los jugadores quedaron como:")
+
+    
+    for i in puntos:
+        if int(i) > valor:
+            valor = int(i)
+
+    # print(valor)
+
+    for i in sorted(podio, key = lambda i: int(podio[i][0]), reverse = True):
+        print("Jugador: {0:1}, puntaje de: {1:2}, palabra: {2:3}, aciertos: {3:4}, errores: {4:5}". format(i, podio[i][0], podio[i][1], podio[i][2],podio[i][3]))
+    
+    return None
 
 
 
@@ -1136,7 +1152,7 @@ def eliminar_perfil_jugador(lista):
 
     archivo = open("00- ingresos.csv") 
     linea = lineas_unica(archivo)
-    print(linea)
+    # print(linea)
     max = "999"
     while linea != max:
         nombre = linea
@@ -1146,7 +1162,7 @@ def eliminar_perfil_jugador(lista):
     archivo.close()
     
 
-    print(f"La lista de nombres es: {lista_jugadores}")
+    # print(f"La lista de nombres es: {lista_jugadores}")
 
     with open("00- ingresos.csv", "w") as file:
         for i in range (len(lista_jugadores)):
