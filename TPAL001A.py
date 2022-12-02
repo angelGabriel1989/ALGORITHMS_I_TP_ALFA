@@ -967,7 +967,8 @@ def correr_etapa_9():
     # inicializó contadores 
     puntos = letras_buenas = letras_malas = "0"
     inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
-    jugar_multilinea()
+    # jugar_multilinea()
+    jugar_multijugador()
 
     # cargando los registros para poder inicializar el juego.
 
@@ -1053,65 +1054,94 @@ def jugar_multijugador():
     """
     Función que toma un archivo, lo lee e interactua con él para poder hacer que todos los jugadores jueguen al mismo tiempo\n
     hecha por GB
+
     """
     contador_personas_jugando = contar_jugadores()
     # Obtengo datos del archivo 
     llave = False
     renglon = 1
+    archivo ="00- puntajes_juego.csv"
+
     while llave != True:
-        archivo ="00- puntajes_juego.csv"
-        linea= capturar_linea(archivo, renglon)
-
+        linea= capturar_linea(renglon)
         pos, jug, palabra_juego, puntos, letras_b, letras_m  = linea
+        
+        print(f"Posición: {pos}, Nombre = {jug}, Palabra Clave: {palabra_juego}")
+
+        devolver_puntos = jugar_multijugador_desde_0(pos, jug, palabra_juego, puntos, letras_b, letras_m) 
+
+        ### DEBERIA EXISTIR UNA VALIDACION POR SI QUISO ESCAPAR O PERDIO ####
+        ### SI SE ELIMINO UN JUGADOR O PERDIO HAY QUE ELIMINAR ESE JUGADOR DEL SISTEMA
 
 
-        registro = open("00- puntajes_juego.csv")
+        resta_jugador = 0
+        contador_personas_jugando = contador_personas_jugando - resta_jugador
 
-        i = False
+        #### ---------------------------- #### 
+        
+        pisar_puntajes(devolver_puntos) # pisar el archivo _ original_ con los datos de retorno del jugador en curso
+        
+        renglon += 1
+        if renglon == contador_personas_jugando:
+            renglon = 1
 
-        while i != True:
-            print("Ingreso al while")
-            pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
-            print(f"{pos}, {jug}")
-            max = "999"
-            contador_posiciones = 0
-                
-            a = 0
-            while a!= 1:
-                lista_juego = jugar_multijugador_desde_0(pos, jug, palabra_juego, puntos, letras_b, letras_m) ### PUNTAJE DEBE SER MODIFICADO
-                # Si el jugador se equivoca, se cargan los retornos en la lista:
-
-                # cargar_datos_puntaje(lista_juego)
-                cargar_datos_puntajes_juego(lista_juego) #######################
-
-
-                #### TENGO QUE LEER PERO SALTEAR AL JUGADOR QUE YA JUGO ### hay que hacer un programa para realizar esa función.
-                pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
-                contador_posiciones += 1
-                leer_archivo_con_posicionador(contador_posiciones)
-                if contador_posiciones == contador_personas_jugando:
-                    # se corre un programa que pone .seek del archivo puntajes_juegos_parciales en 0
-                    posicionar_en_cero()
-
-                pass
-
-        registro.close()
+       
     return None
 
 
-def capturar_linea(directorio, renglon):
+def pisar_puntajes(lista):
+    """
+    Recibe como parámetros los datos del jugador si: \n
+    Se equivocó, si quiso dejar de jugar, si ganó \n
+    Pisa el archivo en la linea correspondiente\n
+    Hecha por GB 
+    """
+    # pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas = lista
+    
+    archivo = open("00- puntajes_juego.csv", "r")
+    
+    lista_maestra = []
+    linea = lineas(archivo)
+    max = "999"
+    while linea[0] != max:
+        if linea[0] == lista[0]:
+            lista_maestra.append(lista)
+        else:
+            lista_maestra.append(linea)
+        linea = lineas(archivo)
+
+    archivo.close()
+
+    print(f"lista maestra: {lista_maestra}")
+
+
+    archivo = open("00- puntajes_juego.csv", "w") # Abriendo archivo para poder pisarlo
+ 
+    for i in range (len(lista_maestra)):
+        archivo.write(f"{lista_maestra[i][0]},{lista_maestra[i][1]},{lista_maestra[i][2]},{lista_maestra[i][3]},{lista_maestra[i][4]},{lista_maestra[i][5]}\n")
+    
+    archivo.close()
+
+    return None
+       
+
+
+def capturar_linea(renglon):
+
     """Abre los puntajes y captura un renglon\n
     devuelve una cadena\n
     Hecha por GB
     """
-    archivo = open(directorio)
+    archivo = open("00- puntajes_juego.csv")
     linea = lineas(archivo)
     i = 0
     while i < renglon:
         devolver = linea
-        archivo = open(directorio)
+        linea = lineas(archivo)
+        i += 1
     
     print(devolver)
+    archivo.close()
 
     return devolver
 
@@ -1227,6 +1257,8 @@ def correccion_letras(letra):
         devolver = ""
     elif letra == "": # ampliación para mejorar bug
         devolver = "0"
+    else:
+        devolver = letra
     return devolver
 
 def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas):
