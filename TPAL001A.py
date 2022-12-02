@@ -1008,47 +1008,6 @@ def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, let
     registro.close()
     return None
 
-def jugar_multilinea():
-    """
-    Función que toma un archivo, lo lee e interactua con él para poder hacer que todos los jugadores jueguen al mismo tiempo
-
-    hecha por GB
-    """
-    contador_personas_jugando = contar_jugadores()
-    registro = open("00- puntajes_juego.csv")
-
-
-    i = False
-
-    while i != True:
-        print("Ingreso al while")
-        pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
-        print(f"{pos}, {jug}")
-        max = "999"
-        contador_posiciones = 0
-        
-        a = 0
-        while a!= 1:
-            lista_juego = jugar_multijugador_desde_0(pos, jug, palabra_juego, puntos, letras_b, letras_m) ### PUNTAJE DEBE SER MODIFICADO
-            # Si el jugador se equivoca, se cargan los retornos en la lista:
-
-            # cargar_datos_puntaje(lista_juego)
-            cargar_datos_puntajes_juego(lista_juego) #######################
-
-
-            #### TENGO QUE LEER PERO SALTEAR AL JUGADOR QUE YA JUGO ### hay que hacer un programa para realizar esa función.
-            pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
-            contador_posiciones += 1
-            leer_archivo_con_posicionador(contador_posiciones)
-            if contador_posiciones == contador_personas_jugando:
-                # se corre un programa que pone .seek del archivo puntajes_juegos_parciales en 0
-                posicionar_en_cero()
-
-        pass
-
-    registro.close()
-    return None
-
 
 def jugar_multijugador():
     """
@@ -1072,8 +1031,9 @@ def jugar_multijugador():
 
         ### DEBERIA EXISTIR UNA VALIDACION POR SI QUISO ESCAPAR O PERDIO ####
         ### SI SE ELIMINO UN JUGADOR O PERDIO HAY QUE ELIMINAR ESE JUGADOR DEL SISTEMA
+        # print(f"La posición es {pos}")
+        if devolver_puntos[0] == "99":
 
-        if pos == "0":
             eliminar_perfil_jugador(devolver_puntos)
 
         contador_personas_jugando = contar_jugadores()
@@ -1139,7 +1099,7 @@ def pisar_puntajes(lista):
 
     archivo.close()
 
-    print(f"lista maestra: {lista_maestra}")
+    # print(f"lista maestra: {lista_maestra}")
 
 
     archivo = open("00- puntajes_juego.csv", "w") # Abriendo archivo para poder pisarlo
@@ -1151,7 +1111,6 @@ def pisar_puntajes(lista):
 
     return None
        
-
 
 def capturar_linea(renglon):
 
@@ -1171,9 +1130,6 @@ def capturar_linea(renglon):
     archivo.close()
 
     return devolver
-
-
-
 
 
 def posicionar_en_cero():
@@ -1360,12 +1316,11 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
                 print("LETRA REPETIDA")
         else:
             contador = 10
+            pos = "0"
             print("\nJUEGO FINALIZADO\n")
+            lista_pasar = [f"{pos}",f"{str(jugador)}",f"{str(palabraElegida)}",f"{str(puntaje_total)}",f"{str(letrasBuenas)}",f"{str(letrasMalas)}"]
+            print(lista_pasar)
     # SE REALIZA UNA MODIFICACION AL RETORNO PARA PODER ESCAPAR
-    if contador == 10:
-        lista_pasar = ["0", f"{str(jugador)}", f"{str(palabraElegida)}" , f"{str(puntaje_total)}", f"{str(letrasBuenas)}", f"{str(letrasMalas)}"]
-
-    #cargar_datos_puntajes_juego(lista_pasar)
 
     return lista_pasar
 
