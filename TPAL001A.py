@@ -426,6 +426,8 @@ def Asignacion_Puntajes(tot_ganados,tot_perdidos):
     Salidas:
         Retorna el puntaje total
     """
+    tot_ganados = int(tot_ganados)
+    tot_perdidos = int(tot_perdidos)
     return tot_ganados + tot_perdidos
 
 
@@ -885,7 +887,7 @@ def ingresar_etapa_ocho():
 
     # crear_ventana_de_inicio()
     jugadores = asignar_turnos_a_todos_los_jugadores()
-    print(jugadores.items())
+    # print(jugadores.items())
     longitud = validez_longitud()
     if longitud == "": 
         longitud = int(randint(5,9))
@@ -987,8 +989,6 @@ def limpieza_archivo():
 
 
 
-
-
 def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, letras_M):
     """
     Función que carga : posicion,jugador,palabra_elegida,puntos,letras_buenas,letras_malas en un csv para poder jugar la interfaz
@@ -1003,7 +1003,7 @@ def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, let
     for i in sorted(nombres_pos_palabraClave, key = lambda i : nombres_pos_palabraClave[i]):
         registro.write(f"{nombres_pos_palabraClave[i][0]},{i},{nombres_pos_palabraClave[i][1]},{puntos},{letras_B},{letras_M}\n")
 
-    print(nombres_pos_palabraClave)
+    # print(nombres_pos_palabraClave)
 
     registro.close()
     return None
@@ -1056,11 +1056,11 @@ def jugar_multijugador():
     hecha por GB
 
     """
-    contador_personas_jugando = contar_jugadores()
+    contador_personas_jugando = contar_jugadores() +1
     # Obtengo datos del archivo 
     llave = False
     renglon = 1
-    archivo ="00- puntajes_juego.csv"
+    # archivo ="00- puntajes_juego.csv"
 
     while llave != True:
         linea= capturar_linea(renglon)
@@ -1073,9 +1073,10 @@ def jugar_multijugador():
         ### DEBERIA EXISTIR UNA VALIDACION POR SI QUISO ESCAPAR O PERDIO ####
         ### SI SE ELIMINO UN JUGADOR O PERDIO HAY QUE ELIMINAR ESE JUGADOR DEL SISTEMA
 
+        if pos == "0":
+            eliminar_perfil_jugador(devolver_puntos)
 
-        resta_jugador = 0
-        contador_personas_jugando = contador_personas_jugando - resta_jugador
+        contador_personas_jugando = contar_jugadores()
 
         #### ---------------------------- #### 
         
@@ -1086,6 +1087,32 @@ def jugar_multijugador():
             renglon = 1
 
        
+    return None
+
+def eliminar_perfil_jugador(lista):
+    # Elimina el jugador indicado: 
+
+    jugador_eliminado = lista [1]
+
+    contador_jugadores=0
+    lista_jugadores = []
+
+    with open("00- ingresos.csv", "r",newline="") as file:
+        linea = file.readline()
+        while linea != "":
+            lista_jugadores.append(linea)
+            linea = file.readline()
+
+    print(lista_jugadores)
+
+    with open("00- ingresos.csv", "w") as file:
+        for i in range (len(lista_jugadores)):
+            if lista_jugadores[i][1] == jugador_eliminado:
+                pass
+            else:
+                file.write(f"{lista_jugadores[i][0]},{lista_jugadores[i][1]},{lista_jugadores[i][2]},{lista_jugadores[i][3]},{lista_jugadores[i][4]},{lista_jugadores[i][5]}\n")
+        
+
     return None
 
 
@@ -1269,7 +1296,6 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
     #print(f"len de letras malas : {errores}")
 
 
-    puntaje_total = int(puntaje_total)
     contador = int(len(letrasMalas))
 
     letrasBuenas = correccion_letras(letrasBuenas)
@@ -1285,6 +1311,7 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
     total_puntajes_perdidos = int(errores*(puntos_por_desaciertos))
     # print(f" total puntos perdidos : {total_puntajes_perdidos}")
     
+    puntaje_total =  total_puntajes_ganados - total_puntajes_perdidos
 
     cant_intentos = 7
     puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
@@ -1292,14 +1319,15 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
 
     print("ES EL TURNO DE:{0:8}".format(jugador.upper()))
 
-    print(f"Palabra a adivinar: {muestraParcial}  Aciertos: {aciertos}  Desaciertos: {errores}")
+    print(f"Palabra a adivinar: {muestraParcial.upper()}  Aciertos: {aciertos}  Desaciertos: {errores}")
+
     # llave para poder salir del else con la modificación de la parte10
     llave = False
     while contador <= cant_intentos and llave != True:
 
         salidaLetra = letraValida(letrasBuenas, letrasMalas)
-        sigueJugando = salidaLetra[1]
         letra = salidaLetra[0] 
+        sigueJugando = salidaLetra[1]
 
         if sigueJugando:
 
@@ -1333,6 +1361,9 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
         else:
             contador = 10
             print("\nJUEGO FINALIZADO\n")
+    # SE REALIZA UNA MODIFICACION AL RETORNO PARA PODER ESCAPAR
+    if contador == 10:
+        lista_pasar = ["0", f"{str(jugador)}", f"{str(palabraElegida)}" , f"{str(puntaje_total)}", f"{str(letrasBuenas)}", f"{str(letrasMalas)}"]
 
     #cargar_datos_puntajes_juego(lista_pasar)
 
