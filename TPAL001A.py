@@ -889,7 +889,7 @@ def ingresar_etapa_ocho():
     longitud = validez_longitud()
     if longitud == "": 
         longitud = int(randint(5,9))
-    print(f"la longitud es {longitud}")
+    # print(f"la longitud es {longitud}")
     # palabra = elegir_palabra(longitud)
 
     # PROGRAMA QUE ME IMPRIME LAS POSICIONES Y LAS PALABRAS:
@@ -1009,7 +1009,8 @@ def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, let
 
 def jugar_multilinea():
     """
-    Funcion que hace jugar al jugador en función a su posición
+    Función que toma un archivo, lo lee e interactua con él para poder hacer que todos los jugadores jueguen al mismo tiempo
+
     hecha por GB
     """
     contador_personas_jugando = contar_jugadores()
@@ -1027,9 +1028,13 @@ def jugar_multilinea():
         
         a = 0
         while a!= 1:
-            lista_juego = jugar_multijugador_desde_0(jug, palabra_juego, puntos, letras_b, letras_m, pos) ### PUNTAJE DEBE SER MODIFICADO
-            cargar_datos_puntaje(lista_juego)
+            lista_juego = jugar_multijugador_desde_0(pos, jug, palabra_juego, puntos, letras_b, letras_m) ### PUNTAJE DEBE SER MODIFICADO
+            # Si el jugador se equivoca, se cargan los retornos en la lista:
+
+            # cargar_datos_puntaje(lista_juego)
             cargar_datos_puntajes_juego(lista_juego) #######################
+
+
             #### TENGO QUE LEER PERO SALTEAR AL JUGADOR QUE YA JUGO ### hay que hacer un programa para realizar esa función.
             pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
             contador_posiciones += 1
@@ -1038,12 +1043,81 @@ def jugar_multilinea():
                 # se corre un programa que pone .seek del archivo puntajes_juegos_parciales en 0
                 posicionar_en_cero()
 
-
-
         pass
 
     registro.close()
     return None
+
+
+def jugar_multijugador():
+    """
+    Función que toma un archivo, lo lee e interactua con él para poder hacer que todos los jugadores jueguen al mismo tiempo\n
+    hecha por GB
+    """
+    contador_personas_jugando = contar_jugadores()
+    # Obtengo datos del archivo 
+    llave = False
+    renglon = 1
+    while llave != True:
+        archivo ="00- puntajes_juego.csv"
+        linea= capturar_linea(archivo, renglon)
+
+        pos, jug, palabra_juego, puntos, letras_b, letras_m  = linea
+
+
+        registro = open("00- puntajes_juego.csv")
+
+        i = False
+
+        while i != True:
+            print("Ingreso al while")
+            pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
+            print(f"{pos}, {jug}")
+            max = "999"
+            contador_posiciones = 0
+                
+            a = 0
+            while a!= 1:
+                lista_juego = jugar_multijugador_desde_0(pos, jug, palabra_juego, puntos, letras_b, letras_m) ### PUNTAJE DEBE SER MODIFICADO
+                # Si el jugador se equivoca, se cargan los retornos en la lista:
+
+                # cargar_datos_puntaje(lista_juego)
+                cargar_datos_puntajes_juego(lista_juego) #######################
+
+
+                #### TENGO QUE LEER PERO SALTEAR AL JUGADOR QUE YA JUGO ### hay que hacer un programa para realizar esa función.
+                pos, jug, palabra_juego, puntos, letras_b, letras_m = lineas(registro)
+                contador_posiciones += 1
+                leer_archivo_con_posicionador(contador_posiciones)
+                if contador_posiciones == contador_personas_jugando:
+                    # se corre un programa que pone .seek del archivo puntajes_juegos_parciales en 0
+                    posicionar_en_cero()
+
+                pass
+
+        registro.close()
+    return None
+
+
+def capturar_linea(directorio, renglon):
+    """Abre los puntajes y captura un renglon\n
+    devuelve una cadena\n
+    Hecha por GB
+    """
+    archivo = open(directorio)
+    linea = lineas(archivo)
+    i = 0
+    while i < renglon:
+        devolver = linea
+        archivo = open(directorio)
+    
+    print(devolver)
+
+    return devolver
+
+
+
+
 
 def posicionar_en_cero():
     archivo = open("00- puntajes_juego_parciales.csv")
@@ -1086,7 +1160,7 @@ def lineas(archivo):
     if linea:
         devolver = linea.rstrip("\n").split(",")
     else:
-        devolver = ["999","","","","",""]
+        devolver = ["999","DEVOLVER","","0","",""]
 
     return devolver
 # agregando comentario
@@ -1095,8 +1169,9 @@ def lineas(archivo):
 
 def cargar_datos_puntajes_juego(lista):
     """
-    Función que lee 2 veces el archivo, en la primer lectura genera una lista
-    en la segunda lectura pisa los datos coordenados
+    Recibe como parámetros los datos del jugador si: \n
+    Se equivocó, si quiso dejar de jugar, si ganó \n
+    Los carga en un archivo temporal\n
     Hecha por GB 
     """
     pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas = lista
@@ -1154,7 +1229,7 @@ def correccion_letras(letra):
         devolver = "0"
     return devolver
 
-def jugar_multijugador_desde_0(jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas, pos):
+def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas):
     aciertos = evaluar_puntaje_incial(letrasBuenas)
     # print(f"len de letras buenas : {aciertos}")
 
