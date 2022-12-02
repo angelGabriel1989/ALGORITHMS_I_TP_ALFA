@@ -1032,9 +1032,10 @@ def jugar_multijugador():
         ### DEBERIA EXISTIR UNA VALIDACION POR SI QUISO ESCAPAR O PERDIO ####
         ### SI SE ELIMINO UN JUGADOR O PERDIO HAY QUE ELIMINAR ESE JUGADOR DEL SISTEMA
         # print(f"La posición es {pos}")
-        if devolver_puntos[0] == "99":
-
+        if devolver_puntos[0] == "0":
+            print("Entro a perfil eliminar jugador linae 1036")
             eliminar_perfil_jugador(devolver_puntos)
+            pass
 
         contador_personas_jugando = contar_jugadores()
 
@@ -1053,28 +1054,42 @@ def eliminar_perfil_jugador(lista):
     # Elimina el jugador indicado: 
 
     jugador_eliminado = lista [1]
-
-    contador_jugadores=0
+    print(f"Jugador a Eliminar: {jugador_eliminado}")
     lista_jugadores = []
 
-    with open("00- ingresos.csv", "r",newline="") as file:
-        linea = file.readline()
-        while linea != "":
-            lista_jugadores.append(linea)
-            linea = file.readline()
+    archivo = open("00- ingresos.csv") 
+    linea = lineas_unica(archivo)
+    print(linea)
+    max = "999"
+    while linea != max:
+        nombre = linea
+        lista_jugadores.append(nombre)
+        linea = lineas_unica(archivo)
+    print("lista_jugadores :  {}".format(lista_jugadores))
+    archivo.close()
+    
 
-    print(lista_jugadores)
+    print(f"La lista de nombres es: {lista_jugadores}")
 
-    with open("00- ingresos.csv", "w") as file:
+    with open("00- ingresos_borrador.csv", "w") as file:
         for i in range (len(lista_jugadores)):
-            if lista_jugadores[i][1] == jugador_eliminado:
+            
+            if lista_jugadores[i] == jugador_eliminado:
                 pass
             else:
-                file.write(f"{lista_jugadores[i][0]},{lista_jugadores[i][1]},{lista_jugadores[i][2]},{lista_jugadores[i][3]},{lista_jugadores[i][4]},{lista_jugadores[i][5]}\n")
-        
+                file.write(f"{lista_jugadores[i]}\n")
 
     return None
 
+def lineas_unica(archivo):
+
+    linea = archivo.readline()
+    if linea:
+        devolver = linea.rstrip("\n")
+    else:
+        devolver = "999"
+
+    return devolver    
 
 def pisar_puntajes(lista):
     """
@@ -1315,11 +1330,11 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
             else:
                 print("LETRA REPETIDA")
         else:
-            contador = 10
             pos = "0"
             print("\nJUEGO FINALIZADO\n")
             lista_pasar = [f"{pos}",f"{str(jugador)}",f"{str(palabraElegida)}",f"{str(puntaje_total)}",f"{str(letrasBuenas)}",f"{str(letrasMalas)}"]
-            print(lista_pasar)
+            print(f"La salida es: {lista_pasar}")
+            contador = 10
     # SE REALIZA UNA MODIFICACION AL RETORNO PARA PODER ESCAPAR
 
     return lista_pasar
