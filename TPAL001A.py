@@ -1037,8 +1037,17 @@ def jugar_multijugador():
     while llave_2 != True:
         linea= capturar_linea(renglon)
         pos, jug, palabra_juego, puntos, letras_b, letras_m  = linea
-        
-        print(f"Posición: {pos}, Nombre = {jug}, Palabra Clave: {palabra_juego}")
+
+        retorno = "999"
+
+        while pos == retorno:
+            posicionar_en_cero()
+            renglon = 1
+            linea =  capturar_linea(renglon)
+            pos, jug, palabra_juego, puntos, letras_b, letras_m = linea
+
+
+        print(f"TURNO DE: {jug}\nPPALABRACLAVE: {palabra_juego}\n")
 
         devolver_puntos = jugar_multijugador_desde_0(pos, jug, palabra_juego, puntos, letras_b, letras_m) 
         pisar_puntajes(devolver_puntos) # pisar el archivo _ original_ con los datos de retorno del jugador en curso
@@ -1061,16 +1070,10 @@ def jugar_multijugador():
                     eliminar_perfil_jugador(devolver_puntos)
                     pass
 
-        contador_personas_jugando = contar_jugadores()
-
-        #### ---------------------------- #### 
-        
-        
+        # contador_personas_jugando = contar_jugadores()
+         
         renglon += 1
-        if renglon == contador_personas_jugando:
-            renglon = 1
-
-       
+      
     return None
 
 def cargar_datos_ganador(): # PODRIA RECIBIR UN PARAMETRO CON UN BLOQUE IF 
@@ -1120,28 +1123,6 @@ def imprimir_ganador(puntos, podio):
              print("Jugador: {0:1}, puntaje de: {1:2}, palabra: {2:3}, aciertos: {3:4}, errores: {4:5}". format(i, podio[i][0], podio[i][1], podio[i][2],podio[i][3]))
     
     return None 
-
-"""
-    print(f"El lista de puntos quedo resuelto como; {puntos}")
-    maximo_valor = -500
-    for i in range (len(puntos)):
-        print(puntos[i])
-        print(type(puntos[i]))
-        if int(puntos[i]) >= maximo_valor:
-            maximo_valor = int(puntos[i])
-        else:
-            pass
-
-
-    # print(maximo_valor)
-    for i in sorted(podio, key = lambda i: podio[i][0], reverse = True):
-        if int(podio[i][0]) != maximo_valor:
-            print("El ganador es: {0:1}, puntaje de: {1:2}, palabra: {2:3}, aciertos: {3:4}, errores: {4:5}". format(i, podio[i][0], podio[i][1], podio[i][2],podio[i][3]))
-        else:
-            print("Jugador: {0:1}, puntaje de: {1:2}, palabra: {2:3}, aciertos: {3:4}, errores:  {4:5}". format(i, podio[i][0], podio[i][1], podio[i][2],podio[i][3]))
-"""
-
-
 
 
 
@@ -1244,8 +1225,9 @@ def capturar_linea(renglon):
 
 
 def posicionar_en_cero():
-    archivo = open("00- puntajes_juego_parciales.csv")
+    archivo = open("00- puntajes_juego.csv")
     archivo.seek(0)
+    archivo.close
     return
   
 def cargar_datos_puntaje(lista_juego):
@@ -1341,7 +1323,7 @@ def evaluar_puntaje_incial(letra):
         else:
             devolver = int(len(letra))
     except:
-        print("upss. no era por acá")
+        # print("upss. no era por acá")
         devolver = 0
     return devolver
 
@@ -1357,7 +1339,7 @@ def correccion_letras(letra):
 
 def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas):
 
-    print(" Los valores son: {0}, {1}, {2}, {3}, {4}, {5}".format(pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas))
+    # print(" Los valores son: {0}, {1}, {2}, {3}, {4}, {5}".format(pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas))
     aciertos = evaluar_puntaje_incial(letrasBuenas)
     errores = evaluar_puntaje_incial(letrasMalas)
     contador = int(len(letrasMalas))
@@ -1381,7 +1363,7 @@ def jugar_multijugador_desde_0(pos,jugador, palabraElegida, puntaje_total, letra
     muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
 
     print("ES EL TURNO DE:{0:8}".format(jugador.upper()))
-    print(f"Palabra a adivinar: {muestraParcial.upper()}  Aciertos: {aciertos}  Desaciertos: {errores}")
+    print(f"Palabra a adivinar: {muestraParcial.upper()}  Aciertos: {aciertos}  Desaciertos: {errores}\n\n\n")
 
     # llave_2 para poder salir del else con la modificación de la parte10
     llave_2 = False
