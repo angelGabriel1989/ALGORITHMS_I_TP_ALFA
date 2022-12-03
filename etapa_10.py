@@ -1,14 +1,8 @@
-default = '999999'
 def leer_linea(archivo, default):
     linea = archivo.readlines()
     return linea.rstrip("\n").split(",")if linea else default
 
 def generar_diccionario(lista):
-    """
-    Pasamos una línea convertida en lista (ejemplo : ej_linea_ar1)
-    Genera un diccionario del estilo {palabra:cantidad}, donde cantidad son las veces que se repitió esa línea en el diccionario
-    Me lo retona ya ordenado alfabeticamente de mayor a menor
-    """
     diccionario = {}
     for palabra in lista:
         if palabra not in diccionario:
@@ -18,11 +12,6 @@ def generar_diccionario(lista):
     return sorted(diccionario,key = lambda item:item[0])
 
 def filtrador_de_palabras(archivo_texto,longitud):
-    """
-    Lee 1 archivo completo línea por línea.
-    Cada línea lo convierte en una lista.
-    Genera una nueva lista con todas las palabras del archivo que contienen caracteres alfabéticos y que contengan la longitud que se recuperó del archivo configuracion.csv
-    """
     archivo = open(archivo_texto)
     linea = leer_linea(archivo_texto,default)
     lista_palabras = []
@@ -63,7 +52,7 @@ def eliminar_acentuados(lista):
     return lista_aux
 
 
-def palabras(archivo1, archivo2, archivo3, archivo4):
+def palabras(archivo1, archivo2, archivo3, archivo4,longitud):
     
     palabras_archivo1=[]
     palabras_archivo2=[]
@@ -73,7 +62,7 @@ def palabras(archivo1, archivo2, archivo3, archivo4):
 
     variable_control_archivo1 = True
     while variable_control_archivo1:
-        palabras_arc1 = filtrador_de_palabras(archivo1)
+        palabras_arc1 = filtrador_de_palabras(archivo1, longitud)
         palabras_sintilde1 = eliminar_acentuados(palabras_arc1)
         #Agrego una lista de palabras sin ningún caracter raro
         palabras_archivo1.append(palabras_sintilde1)
@@ -83,7 +72,7 @@ def palabras(archivo1, archivo2, archivo3, archivo4):
     
     variable_control_archivo2 = True
     while variable_control_archivo2:
-        palabras_arc2 = filtrador_de_palabras(archivo2)
+        palabras_arc2 = filtrador_de_palabras(archivo2,longitud)
         palabras_sintilde2 = eliminar_acentuados(palabras_arc2)
         #Agrego una lista de palabras sin ningún caracter raro
         palabras_archivo2.append(palabras_sintilde2)
@@ -93,7 +82,7 @@ def palabras(archivo1, archivo2, archivo3, archivo4):
 
     variable_control_archivo3 = True
     while variable_control_archivo3:
-        palabras_arc3 = filtrador_de_palabras(archivo3)
+        palabras_arc3 = filtrador_de_palabras(archivo3, longitud)
         palabras_sintilde3 = eliminar_acentuados(palabras_arc3)
         #Agrego una lista de palabras sin ningún caracter raro
         palabras_archivo3.append(palabras_sintilde3)
@@ -153,15 +142,15 @@ def palabras(archivo1, archivo2, archivo3, archivo4):
     archivo4.close()
 
 
-    def main():
-        archivo_1 = open("Cuentos.txt","r")
-        archivo_2 = open("La araña negra - tomo 1.txt","r")
-        archivo_3 = open("Las 1000 noches y 1 noche.txt","r")
-        archivo_4 = open("palabras.txt","a")
-        configuracion = open("configuracion.csv")
+    default = '999999'
+    archivo_1 = open ("Cuentos.txt", "r")
+    archivo_2 = open ("La araña negra - tomo 1.txt", "r")
+    archivo_3 = open ("Las 1000 Noches y 1 Noche.txt", "r")
+    archivo_4 = open("palabras.txt","a")
+    configuracion = open("configuracion.csv")
+    linea_config = leer_linea("configuracion.csv")
+    while linea_config[0] != "LONG_PALABRA_MIN":
         linea_config = leer_linea("configuracion.csv")
-        while linea_config[0] != "LONG_PALABRA_MIN":
-            linea_config = leer_linea("configuracion.csv")
-        longitud = linea_config[1]
-        configuracion.close()
-        palabras(archivo_1,archivo_2,archivo_3,archivo_4)
+    longitud = linea_config[1]
+    configuracion.close()
+    palabras(archivo_1,archivo_2,archivo_3,archivo_4, longitud)
