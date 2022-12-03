@@ -1027,35 +1027,52 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
                 excluidos.append(resultados_evaluar[1])
                 print(f"lista de exluidos: {excluidos}")
             elif resultados_evaluar[6] == 1:
+                # cargar_datos_en_archivo_ganador_partida(resultados_evaluar)
+                print(f"\n\n JUGADORES POSICIONES PUNTAJES \n\n {jugadores_posiciones_puntajes}")
                 podio_ordenado = ordenar_lista(jugadores_posiciones_puntajes)
-                procesar_ganador(podio_ordenado)
+                llave_1 = True
 
         i += 1
 
         if i == (cant_jugadores):
             i = 0
-            print("reset")
         llave_2 += 1
-         
+
+    imprimir_ganador(podio_ordenado)     
 
     return None 
 
 def ordenar_lista(podio):
 
-    devolver = []
-    for i in sorted(podio, key = lambda i : podio[i][3], reverse= True):
-        devolver.append(podio[i])
+    print(f"Ingreso al podio {podio}")
 
+    devolver = {}
+    for i in range (len(podio)):
+        print(f" {podio[i][0]} {podio[i][1]} {podio[i][2]}" )
+        devolver[podio[i][1]] = [podio[i][2],podio[i][3], podio[i][4], podio[i][5] ]
 
+    print(devolver)       
+    return devolver
 
-
-    return
-
-def procesar_ganador(podio):
+def cargar_datos_en_archivo_ganador_partida(podio):
     archivo = open("00- puntajes_juego.csv", "w")
 
-    for i in range (len(podio)) :
-        archivo.write(f"{podio[i][0]},{podio[i][1]},{podio[i][2]},{podio[i][3]},{podio[i][4]},{podio[i][5]},{podio[i][6]}\n ")
+    print(f"\n\n\n{podio}\n\n\n")
+
+    for i in sorted(podio, key = lambda i : int(podio[i][3]), reverse = True):
+        archivo.write(f"{podio[i][0]},{podio[i][1]},{podio[i][2]},{podio[i][3]},{podio[i][4]},{podio[i][5]}\n ")
+
+    archivo.close
+    return None
+
+
+def imprimir_tabla_ganador(podio):
+    
+    for i in sorted(podio, key = lambda i : podio[i][3], Reverse = True):
+        print(f"{i} {podio[i]} ")
+    
+    # print(f"Los puntajes son: {puntaje}")
+
 
 
 def jugar_multijugador_lista(perfil_jugador):
@@ -1610,7 +1627,7 @@ def agregar_gandores_perdedores(contador, lista_pasar):
 
 def ingresar_etapa_ocho():
 
-    # crear_ventana_de_inicio()
+    crear_ventana_de_inicio()
     jugadores = asignar_turnos_a_todos_los_jugadores()
     # print(jugadores.items())
     longitud = validez_longitud()
