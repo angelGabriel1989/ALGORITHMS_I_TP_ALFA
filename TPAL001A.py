@@ -566,7 +566,7 @@ def crear_ventana_de_inicio():
     boton_ingresar.pack()
     boton_ingresar.place(x=30,y=140)
     #Boton Iniciar partida
-    boton_iniciar_partida = Button(ventana_principal,text="Iniciar partida")
+    boton_iniciar_partida = Button(ventana_principal,text="Iniciar partida",command=destruir_ventana_principal)
     boton_iniciar_partida.pack()
     boton_iniciar_partida.place(x=90,y=140)
     #Boton Registrarse
@@ -802,6 +802,11 @@ def contar_jugadores():
     return(contador_jugadores)
 
 
+def destruir_ventana_principal():
+    ventana_principal.destroy()
+    
+
+
 def asignar_turnos_a_todos_los_jugadores():
     #Devuelve un diccionario con clave el nombre de los jugadores y el valor es el turno aleatorio y unico que lo toco a cada uno una vez que se toque el boton iniciar partida
     cantidad_jugadores=contar_jugadores()
@@ -820,8 +825,6 @@ def asignar_turnos_a_todos_los_jugadores():
     for clave in diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas:
         print(f"El jugador {clave} tiene turno numero {diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas[clave]}")
     print("A jugar!")
-    # LINEA COMENTADA GABRIEL BARROS 22.06 hs 30/11/22
-    # ventana_principal.destroy()
 
     # limpiar_pantalla()
 
