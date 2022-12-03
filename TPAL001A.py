@@ -971,7 +971,7 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
 
 
 def correr_etapa_9():
-    # crear_ventana_de_inicio()
+    crear_ventana_de_inicio()
     # Cuando noelia pulsa ingresar, ese boton tiene que devolverme un TRUE Una llave_2, algo de acceso para entrar a:
 
     nombres_posiciones_palabraClave = ingresar_etapa_ocho()
