@@ -1239,7 +1239,7 @@ def capturar_linea(renglon):
         linea = lineas(archivo)
         i += 1
     
-    print(devolver)
+    # print(devolver)
     archivo.close()
 
     return devolver
