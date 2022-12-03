@@ -950,8 +950,6 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
 
 ####################### ------------------------------------------COMENZANDO ETAPA 9-------------------------------------- ##################################
 
-
-
 def limpieza_archivo():
     """
     Programa para poner en blanco un archivo random
@@ -983,27 +981,147 @@ def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, let
     registro.close()
     return None
 
+def cargar_datos_iniciales(nombres_pos_palabraClave, puntos, letras_B, letras_M):
+    """
+    Función que carga los datos en un array de lista \n
+    Devuelve una lista de listas, con la posición\n
+    Hecha por GB
+    """
+    jugadores_palabra_puntaje = []
 
-""""
-def jugar_multijugador_2():
+    for i in sorted(nombres_pos_palabraClave, key = lambda i : nombres_pos_palabraClave[i]):
+        jugadores_palabra_puntaje.append([nombres_pos_palabraClave[i][0],i,nombres_pos_palabraClave[i][1],puntos,letras_B,letras_M])
+        print(jugadores_palabra_puntaje)
+
+
+    return jugadores_palabra_puntaje
+
+def iterar_multijuego(jugadores_posiciones_puntajes):
     """Función que toma realiza la lógica de juego multilinea\n 
     Hecha por GB
     """
-    jugadores_por_posicion = devolver_lista_jugadores()
-    listado_perdedores_abandonadores = []
-    archivo = open("00- puntajes_juego.csv")
+    
+    # jugadores_por_posicion = devolver_lista_jugadores()
+    excluidos = []
+    cant_jugadores = int(len(jugadores_posiciones_puntajes))
+    # archivo = open("00- puntajes_juego.csv")
 
     llave_1 = False
-
+    i = 0
     while llave_1 != True:
-        linea = lineas(archivo)
-        
-        llave_1 = True""""
+
+        if i == cant_jugadores:
+            i = 0
+
+        perfil_jugador = jugadores_posiciones_puntajes[i]
+        # print(type(perfil_jugador))
+        if int(perfil_jugador[0]) in excluidos:
+            i += 1
+            pass
+        else:
+            resultados_evaluar = jugar_multijugador_lista(perfil_jugador)
+            if len(resultados_evaluar) == 7:
+                        
+                if resultados_evaluar[6] == "Gano": # Hay que correr un programa que capture los carteles del ganador y de los perdedores
+                    lista_podios, podio = cargar_datos_ganador()
+                    imprimir_ganador(lista_podios,podio)
+                    llave_1 = True
+                elif resultados_evaluar[6] == "Perdió" or resultados_evaluar[6] == "Abandonó":
+                    """
+                    Función que captura el nombre o la posición del jugador y lo agrega a una lista\n 
+                    Esta posición sera salteada
+                    Hecho por GB
+                    """ 
+                    excluidos.append(resultados_evaluar[0])
+                    pass    
+            i += 1
+   
+
+    return None 
 
 
 
-    return None # deberia retornar ganador y resto en una lista
+def jugar_multijugador_lista(perfil_jugador):
+
+    pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas = perfil_jugador
+    # print(" Los valores son: {0}, {1}, {2}, {3}, {4}, {5}".format(pos,jugador, palabraElegida, puntaje_total, letrasBuenas, letrasMalas))
+    aciertos = evaluar_puntaje_incial(letrasBuenas)
+    errores = evaluar_puntaje_incial(letrasMalas)
+    contador = int(len(letrasMalas))
+    letrasBuenas = correccion_letras(letrasBuenas)
+    letrasMalas = correccion_letras(letrasMalas)
+    puntos_por_acierto = 2
+    total_puntajes_ganados = int(aciertos*(puntos_por_acierto))
+    puntos_por_desaciertos = -1
+    total_puntajes_perdidos = int(errores*(puntos_por_desaciertos))
+    puntaje_total =  total_puntajes_ganados - total_puntajes_perdidos
     
+    cant_intentos = 7
+    puntaje = Asignacion_Puntajes(total_puntajes_ganados, total_puntajes_perdidos)
+    muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
+
+    print("ES EL TURNO DE:{0:8}".format(jugador.upper()))
+    print(f"Palabra a adivinar: {muestraParcial.upper()}  Aciertos: {aciertos}  Desaciertos: {errores}\n\n\n")
+
+    # llave_2 para poder salir del else con la modificación de la parte10
+    llave_2 = False
+
+    while contador <= cant_intentos and llave_2 != True:
+
+        salidaLetra = letraValida(letrasBuenas, letrasMalas)
+        letra = salidaLetra[0] 
+        sigueJugando = salidaLetra[1]
+
+        if sigueJugando:
+
+            esBuena = letraBuena(letra, palabraElegida)
+
+            if esBuena:
+                aciertos += 1
+                total_puntajes_ganados = int(aciertos * puntos_por_acierto)
+                puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
+                letrasBuenas = acumularLetras(letra, letrasBuenas)
+                muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
+                printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
+                contador = ganaPierdo_multilinea(muestraParcial, palabraElegida, errores,puntaje)
+                if contador == 9:
+                    puntaje += 10
+                lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
+                # print(f"El puntaje total es: {puntaje}")
+                                   
+            elif letra not in letrasMalas: 
+                errores += 1
+                total_puntajes_perdidos = errores * puntos_por_desaciertos
+                puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
+                contador += 1
+                letrasMalas = acumularLetras(letra, letrasMalas)
+                muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
+                printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
+                contador = ganaPierdo_multilinea(muestraParcial, palabraElegida, errores,puntaje)
+                #### HAY QUE ESCRIBIR UN CODIGO QUE ALMACENE EN UN DICCIONARIO A: 
+                lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
+                if contador == 8:
+                    puntaje -= 5
+                pos,jugador, palabraElegida, puntaje, letrasBuenas, letrasMalas
+                llave_2 = True
+
+            else:
+                print("LETRA REPETIDA")
+        else:
+            lista_pasar = [int(pos),str(jugador),str(palabraElegida),str(puntaje_total),str(letrasBuenas),str(letrasMalas)]
+            contador = 10
+            print("HAS ABANDONADO LA PARTIDA \n")
+        
+        if contador == 9:
+            lista_pasar.append("Gano")
+        elif contador == 8:
+            lista_pasar.append("Perdió")
+        else:
+            lista_pasar.append("Abandonó")
+    
+ 
+
+    return lista_pasar
 
 def devolver_lista_jugadores():
     jugadores = []
@@ -1016,6 +1134,8 @@ def devolver_lista_jugadores():
         lineas = lineas(archivo)
     
     return jugadores
+
+
 
 
 def jugar_multijugador():
@@ -1495,8 +1615,10 @@ def correr_etapa_9():
     print(f"Los nombres, posiciones y las palabras claves son: {nombres_posiciones_palabraClave}")
  
     puntos = letras_buenas = letras_malas = "0"
-    inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
-    jugar_multijugador()
+    lista_jugadores_puntos = cargar_datos_iniciales(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas)
+    iterar_multijuego(lista_jugadores_puntos)
+    # inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
+    # jugar_multijugador()
 
     #cargando los registros para poder inicializar el juego.
 
