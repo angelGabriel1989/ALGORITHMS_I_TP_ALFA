@@ -794,7 +794,7 @@ def ingresar_usuarios_a_la_sala_de_juego(nombre_jugador):
 def contar_jugadores():
     #Cuenta la cantidad de jugadores que ingresaron a la sala de juego una vez que se presiono el boton iniciar partida
     contador_jugadores=0
-    with open("00- puntajes_juego.csv", "r",newline="") as file:
+    with open("00- ingresos.csv", "r",newline="") as file:
         linea = file.readline()
         while linea != "":
             contador_jugadores=contador_jugadores+ 1
@@ -824,7 +824,6 @@ def asignar_turnos_a_todos_los_jugadores():
     # ventana_principal.destroy()
 
     # limpiar_pantalla()
-
 
     return diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas
     #Aca se importaria lo de la parte uno e inmediatamente abajo de esto llamamos a la funcion jugar
@@ -896,24 +895,6 @@ def quienJuegaPrimero(lista):
 ###########------------------------------------------- HAY QUE DESARROLLAR INTERFAZ -------------------------------------------- #############
 ###########------------------------------------------- FUNCIONES DE ETAPA 8 Y 9 ------------------------------------------------ #############
 
-def ingresar_etapa_ocho():
-
-    # crear_ventana_de_inicio()
-    jugadores = asignar_turnos_a_todos_los_jugadores()
-    # print(jugadores.items())
-    longitud = validez_longitud()
-    if longitud == "": 
-        longitud = int(randint(5,9))
-    # print(f"la longitud es {longitud}")
-    # palabra = elegir_palabra(longitud)
-
-    # PROGRAMA QUE ME IMPRIME LAS POSICIONES Y LAS PALABRAS:
-
-    definir_nombre_variable = consolidar_posiciones_y_palabras(jugadores, longitud)
-
-    return definir_nombre_variable
-
-
 def elegir_palabra(longitud):
     "Gabriel Barros"
     lista_diccionario = diccionarValido()
@@ -970,26 +951,6 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
 ####################### ------------------------------------------COMENZANDO ETAPA 9-------------------------------------- ##################################
 
 
-def correr_etapa_9():
-    crear_ventana_de_inicio()
-    # Cuando noelia pulsa ingresar, ese boton tiene que devolverme un TRUE Una llave_2, algo de acceso para entrar a:
-
-    nombres_posiciones_palabraClave = ingresar_etapa_ocho()
-    # print(nombres_posiciones_palabraClave)
-
-    # limpieza puntaje_usuarios_historico
-    limpieza_archivo()
-    # inicializó contadores 
-    puntos = letras_buenas = letras_malas = "0"
-    inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
-    # jugar_multilinea()
-
-    jugar_multijugador()
-
-    # cargando los registros para poder inicializar el juego.
-
-    return None
-
 
 def limpieza_archivo():
     """
@@ -1009,9 +970,9 @@ def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, let
     Creada por GB 
     """
 
-    registro = open("00- puntajes_juego.csv", "r+")
+    registro = open("00- puntajes_juego.csv", "w")
     # Leer títulos
-    linea = registro.readline()
+    # inea = registro.readline()
 
     # Escribir en el archivo según ordenamiento establecido en el contrato de la función
     for i in sorted(nombres_pos_palabraClave, key = lambda i : nombres_pos_palabraClave[i]):
@@ -1023,14 +984,47 @@ def inicializar_puntaje_usuarios(nombres_pos_palabraClave, puntos, letras_B, let
     return None
 
 
+""""
+def jugar_multijugador_2():
+    """Función que toma realiza la lógica de juego multilinea\n 
+    Hecha por GB
+    """
+    jugadores_por_posicion = devolver_lista_jugadores()
+    listado_perdedores_abandonadores = []
+    archivo = open("00- puntajes_juego.csv")
+
+    llave_1 = False
+
+    while llave_1 != True:
+        linea = lineas(archivo)
+        
+        llave_1 = True""""
+
+
+
+    return None # deberia retornar ganador y resto en una lista
+    
+
+def devolver_lista_jugadores():
+    jugadores = []
+    archivo = open("00- puntajes_juego.csv")
+    linea = lineas(archivo)
+    fin_archivo = "999"
+
+    while linea[0] != fin_archivo:
+        jugadores.append(lineas[1])
+        lineas = lineas(archivo)
+    
+    return jugadores
+
+
 def jugar_multijugador():
     """
     Función que toma un archivo, lo lee e interactua con él para poder hacer que todos los jugadores jueguen al mismo tiempo\n
     hecha por GB
 
     """
-    #contador_personas_jugando = contar_jugadores() + 1
-    # Obtengo datos del archivo 
+    contador_personas_jugando = contar_jugadores() + 1
     llave_2 = False
     renglon = 1
     while llave_2 != True:
@@ -1039,6 +1033,8 @@ def jugar_multijugador():
         pos, jug, palabra_juego, puntos, letras_b, letras_m  = linea
 
         retorno = "999"
+        
+        lista_perdio_salio = []
 
         while pos == retorno:
             posicionar_en_cero()
@@ -1060,18 +1056,14 @@ def jugar_multijugador():
                 imprimir_ganador(lista_podios,podio)
 
                 llave_2 = True
-            elif devolver_puntos[6] == "Perdió": # En este caso continua el juego, se almacena en una memoria los datos del que perdió.
-                ### Instrucción de bloque de código que permita eliminar al jugador y almacenar los datos en la memoria
-                eliminar_perfil_jugador(devolver_puntos)
-                contador_personas_jugando -= 1
+            elif devolver_puntos[6] == "Perdió" or devolver_puntos[0] == "0":
+                """
+                Función que captura el nombre o la posición del jugador y lo agrega a una lista\n 
+                Esta posición sera salteada
+                Hecho por GB
+                """ 
+                lista_perdio_salio = cargar_datos_perdedor_abandono(lista_podios, devolver_puntos[1])
                 pass
-            else: #Seria el caso que abandonó  
-
-                if devolver_puntos[0] == "0":
-                    print("ELIMINANDO PERFIL")
-                    eliminar_perfil_jugador(devolver_puntos)
-                    contador_personas_jugando -= 1
-                    pass
         
         if contador_personas_jugando == 0:
             lista_podios, podio = cargar_datos_ganador()
@@ -1082,6 +1074,11 @@ def jugar_multijugador():
         renglon += 1
       
     return None
+
+
+def cargar_datos_perdedor_abandono(lista_podios, usuario):
+    lista_podios.append(usuario)        
+    return lista_podios    
 
 def cargar_datos_ganador(): # PODRIA RECIBIR UN PARAMETRO CON UN BLOQUE IF 
     """
@@ -1288,6 +1285,8 @@ def lineas(archivo):
         devolver = linea.rstrip("\n").split(",")
     else:
         devolver = ["999","DEVOLVER","","0","",""]
+    
+    archivo.close()
 
     return devolver
 # agregando comentario
@@ -1472,7 +1471,35 @@ def agregar_gandores_perdedores(contador, lista_pasar):
 
 ##########--------------------------------------------- BLOQUE QUE SERIA EL NUEVO MAIN ------------------------------------- #############################
 
-# ingresar_etapa_ocho()
-# correción etapa ocho 18.14
+def ingresar_etapa_ocho():
+
+    # crear_ventana_de_inicio()
+    jugadores = asignar_turnos_a_todos_los_jugadores()
+    # print(jugadores.items())
+    longitud = validez_longitud()
+    if longitud == "": 
+        longitud = int(randint(5,9))
+    # print(f"la longitud es {longitud}")
+    # palabra = elegir_palabra(longitud)
+
+    # PROGRAMA QUE ME IMPRIME LAS POSICIONES Y LAS PALABRAS:
+
+    definir_nombre_variable = consolidar_posiciones_y_palabras(jugadores, longitud)
+
+    return definir_nombre_variable
+
+
+def correr_etapa_9():
+    # crear_ventana_de_inicio()
+    nombres_posiciones_palabraClave = ingresar_etapa_ocho()
+    print(f"Los nombres, posiciones y las palabras claves son: {nombres_posiciones_palabraClave}")
+ 
+    puntos = letras_buenas = letras_malas = "0"
+    inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
+    jugar_multijugador()
+
+    #cargando los registros para poder inicializar el juego.
+
+    return None
 
 correr_etapa_9()

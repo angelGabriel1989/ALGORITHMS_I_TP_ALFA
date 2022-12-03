@@ -1,0 +1,16 @@
+
+
+
+def jugar_multijugador():
+    "listado_posiciones = archivo.csv"
+    archivo_posición_palabra_scoring = alguna función que carga esa info
+    lista_excluidos = []
+
+    llave = False
+
+    while llave != True:
+        linea = lineas(listado_posiciones)
+        llave_2 = False
+        while llave_2 != True:
+            pos
+
