@@ -794,7 +794,7 @@ def ingresar_usuarios_a_la_sala_de_juego(nombre_jugador):
 def contar_jugadores():
     #Cuenta la cantidad de jugadores que ingresaron a la sala de juego una vez que se presiono el boton iniciar partida
     contador_jugadores=0
-    with open("00- ingresos.csv", "r",newline="") as file:
+    with open("00- puntajes_juego.csv", "r",newline="") as file:
         linea = file.readline()
         while linea != "":
             contador_jugadores=contador_jugadores+ 1
@@ -983,6 +983,7 @@ def correr_etapa_9():
     puntos = letras_buenas = letras_malas = "0"
     inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
     # jugar_multilinea()
+
     jugar_multijugador()
 
     # cargando los registros para poder inicializar el juego.
@@ -1028,12 +1029,10 @@ def jugar_multijugador():
     hecha por GB
 
     """
-    contador_personas_jugando = contar_jugadores() +1
+    #contador_personas_jugando = contar_jugadores() + 1
     # Obtengo datos del archivo 
     llave_2 = False
     renglon = 1
-    # archivo ="00- puntajes_juego.csv"
-
     while llave_2 != True:
         contador_personas_jugando = contar_jugadores()
         linea= capturar_linea(renglon)
@@ -1147,10 +1146,17 @@ def eliminar_perfil_jugador(lista):
     # Elimina el jugador indicado: 
 
     jugador_eliminado = lista [1]
+
+    # print(lista)
+    file_agregar_eliminados = open("00- puntajes_juego_eliminados.csv", "a")
+    file_agregar_eliminados.write(f"{lista[0]},{lista[1]},{lista[2]},{lista[3]},{lista[4]},{lista[5]}\n")
+
+    file_agregar_eliminados.close()
+
     print(f"Jugador a Eliminar: {jugador_eliminado}")
     lista_jugadores = []
 
-    archivo = open("00- ingresos.csv") 
+    archivo = open("00- puntajes_juego.csv") 
     linea = lineas_unica(archivo)
     # print(linea)
     max = "999"
@@ -1160,11 +1166,10 @@ def eliminar_perfil_jugador(lista):
         linea = lineas_unica(archivo)
     print("lista_jugadores :  {}".format(lista_jugadores))
     archivo.close()
-    
 
     # print(f"La lista de nombres es: {lista_jugadores}")
 
-    with open("00- ingresos.csv", "w") as file:
+    with open("00- puntajes_juego.csv", "w") as file:
         for i in range (len(lista_jugadores)):
             
             if lista_jugadores[i] == jugador_eliminado:
