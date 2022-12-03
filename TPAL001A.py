@@ -825,8 +825,6 @@ def asignar_turnos_a_todos_los_jugadores():
     for clave in diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas:
         print(f"El jugador {clave} tiene turno numero {diccionario_jugadores_con_turnos_y_palabras_magicas_asignadas[clave]}")
     print("A jugar!")
-    # LINEA COMENTADA GABRIEL BARROS 22.06 hs 30/11/22
-    # ventana_principal.destroy()
 
     # limpiar_pantalla()
 
