@@ -1004,41 +1004,58 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
     # jugadores_por_posicion = devolver_lista_jugadores()
     excluidos = []
     cant_jugadores = int(len(jugadores_posiciones_puntajes))
+    # print(f"LA CANTIDAD DE JUGADORES ES {cant_jugadores}")
     # archivo = open("00- puntajes_juego.csv")
-
     llave_1 = False
     i = 0
-    while llave_1 != True:
-
-        if i == cant_jugadores:
-            i = 0
+    max_movimientos =  20
+    llave_2 = 0
+    while llave_1 != True and llave_2 < max_movimientos:
 
         perfil_jugador = jugadores_posiciones_puntajes[i]
-        # print(type(perfil_jugador))
-        if int(perfil_jugador[0]) in excluidos:
-            i += 1
-            pass
-        else:
-            resultados_evaluar = jugar_multijugador_lista(perfil_jugador)
-            if len(resultados_evaluar) == 7:
-                        
-                if resultados_evaluar[6] == "Gano": # Hay que correr un programa que capture los carteles del ganador y de los perdedores
-                    lista_podios, podio = cargar_datos_ganador()
-                    imprimir_ganador(lista_podios,podio)
-                    llave_1 = True
-                elif resultados_evaluar[6] == "Perdió" or resultados_evaluar[6] == "Abandonó":
-                    """
-                    Función que captura el nombre o la posición del jugador y lo agrega a una lista\n 
-                    Esta posición sera salteada
-                    Hecho por GB
-                    """ 
-                    excluidos.append(resultados_evaluar[0])
-                    pass    
-            i += 1
-   
+        print(perfil_jugador)
+        if perfil_jugador:
+            if (perfil_jugador[1]) in excluidos:
+                pass
+            else:
+                resultados_evaluar = jugar_multijugador_lista(perfil_jugador)
+                jugadores_posiciones_puntajes[i] = resultados_evaluar
+                print(jugadores_posiciones_puntajes[i])
+
+        if len(resultados_evaluar) == 7:
+            if resultados_evaluar[6] == 3:
+                excluidos.append(resultados_evaluar[1])
+                print(f"lista de exluidos: {excluidos}")
+            elif resultados_evaluar[6] == 1:
+                podio_ordenado = ordenar_lista(jugadores_posiciones_puntajes)
+                procesar_ganador(podio_ordenado)
+
+        i += 1
+
+        if i == (cant_jugadores):
+            i = 0
+            print("reset")
+        llave_2 += 1
+         
 
     return None 
 
+def ordenar_lista(podio):
+
+    devolver = []
+    for i in sorted(podio, key = lambda i : podio[i][3], reverse= True):
+        devolver.append(podio[i])
+
+
+
+
+    return
+
+def procesar_ganador(podio):
+    archivo = open("00- puntajes_juego.csv", "w")
+
+    for i in range (len(podio)) :
+        archivo.write(f"{podio[i][0]},{podio[i][1]},{podio[i][2]},{podio[i][3]},{podio[i][4]},{podio[i][5]},{podio[i][6]}\n ")
 
 
 def jugar_multijugador_lista(perfil_jugador):
@@ -1113,11 +1130,11 @@ def jugar_multijugador_lista(perfil_jugador):
             print("HAS ABANDONADO LA PARTIDA \n")
         
         if contador == 9:
-            lista_pasar.append("Gano")
+            lista_pasar.append(1)
         elif contador == 8:
-            lista_pasar.append("Perdió")
-        else:
-            lista_pasar.append("Abandonó")
+            lista_pasar.append(2)
+        elif contador == 10:
+            lista_pasar.append(3)
     
  
 
@@ -1612,7 +1629,7 @@ def ingresar_etapa_ocho():
 def correr_etapa_9():
     # crear_ventana_de_inicio()
     nombres_posiciones_palabraClave = ingresar_etapa_ocho()
-    print(f"Los nombres, posiciones y las palabras claves son: {nombres_posiciones_palabraClave}")
+    # print(f"Los nombres, posiciones y las palabras claves son: {nombres_posiciones_palabraClave}")
  
     puntos = letras_buenas = letras_malas = "0"
     lista_jugadores_puntos = cargar_datos_iniciales(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas)
