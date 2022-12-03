@@ -566,7 +566,7 @@ def crear_ventana_de_inicio():
     boton_ingresar.pack()
     boton_ingresar.place(x=30,y=140)
     #Boton Iniciar partida
-    boton_iniciar_partida = Button(ventana_principal,text="Iniciar partida")
+    boton_iniciar_partida = Button(ventana_principal,text="Iniciar partida",command=destruir_ventana_principal)
     boton_iniciar_partida.pack()
     boton_iniciar_partida.place(x=90,y=140)
     #Boton Registrarse
@@ -800,6 +800,11 @@ def contar_jugadores():
             contador_jugadores=contador_jugadores+ 1
             linea = file.readline()
     return(contador_jugadores)
+
+
+def destruir_ventana_principal():
+    ventana_principal.destroy()
+    
 
 
 def asignar_turnos_a_todos_los_jugadores():
