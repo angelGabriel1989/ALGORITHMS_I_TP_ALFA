@@ -163,3 +163,6 @@ def palabras_etapa_10(archivo1, archivo2, archivo3):
         #Una vez termine de contar cuantas veces se repite la palabra en cada archivo lo escribe en archivo_4
         archivo_4.append(str(minimo) + "," + str(acumulador_pal_arc1) + ","+ str(acumulador_pal_arc2) +  "," + str(acumulador_pal_arc3) + "\n")
     archivo_4.close()
+
+
+palabras_etapa_10()
