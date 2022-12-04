@@ -1050,28 +1050,25 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
         llave_2 += 1
 
     lista_puntajes = obtener_maximo(jugadores_posiciones_puntajes)
-    """
-    Función que le llega una lista de los jugadores\n
-    Devuelve el máximo de los puntos\n
-    GB"""
-    #ELEMENTO 3 de lista es el puntaje
-    imprimir_tabla_ganador(podio_ordenado)     
-
-    maximo = 0
-
-    for i in range (len(podio_ordenado)):
-        if int(podio_ordenado[i][3]) > maximo:
-            maximo = podio_ordenado[i][3]
+    ganador = imprimir_ganador(lista_puntajes, podio_ordenado)
 
 
-    return maximo 
+
+    return ganador 
+   
 
 def obtener_maximo(lista):
-    print(f"Llega acá la siguiente orden: {lista}")
+    #ELEMENTO 3 de lista es el puntaje
+    maximo = -100
+
+    lista_puntaje = []
+    for i in range (len(lista)):
+        if int(lista[i][3]) > maximo:
+            lista_puntaje.append(lista[i][3])
 
 
+    return lista_puntaje
 
-    return None
 
 def ordenar_lista(podio):
 
@@ -1293,6 +1290,8 @@ def cargar_datos_ganador(): # PODRIA RECIBIR UN PARAMETRO CON UN BLOQUE IF
 
 def imprimir_ganador(puntos, podio):
 
+    print(f"\n\n\n\n PODIO ORDENADO \n {podio}\n\n\n")
+
     valor = -100
 
     for i in puntos:
@@ -1300,14 +1299,16 @@ def imprimir_ganador(puntos, podio):
             valor = int(i)
 
     # print(valor)
+    ganador = []
 
-    for i in sorted(podio, key = lambda i: int(podio[i][0]), reverse = True):
-        if int(podio[i][0]) == valor:
-            print("El ganador es: {0:1}, puntaje de: {1:2}, palabra: {2:3}, aciertos: {3:4}, errores: {4:5}". format(i, podio[i][0], podio[i][1], podio[i][2],podio[i][3]))
+    for i in sorted(podio, key = lambda i: int(podio[i][1]), reverse = True):
+        if int(podio[i][1]) == valor:
+            print("El ganador es: {0:1}, puntaje de: {1:2}, palabra: {2:3}, aciertos: {3:4}, errores: {4:5}\n\n". format(i, podio[i][1], podio[i][0], podio[i][2],podio[i][3]))
+            ganador = [i, podio[i][1], podio[i][0], podio[i][2],podio[i][3]]
         else:
              print("Jugador: {0:1}, puntaje de: {1:2}, palabra: {2:3}, aciertos: {3:4}, errores: {4:5}". format(i, podio[i][0], podio[i][1], podio[i][2],podio[i][3]))
     
-    return None 
+    return ganador 
 
 def gano_maquina(puntos,podio):
     print("LA MAQUINA HA GANADO \n Los jugadores quedaron como:")
@@ -1660,7 +1661,7 @@ def agregar_gandores_perdedores(contador, lista_pasar):
 
 def ingresar_etapa_ocho():
 
-    crear_ventana_de_inicio()
+    # crear_ventana_de_inicio()
     jugadores = asignar_turnos_a_todos_los_jugadores()
     # print(jugadores.items())
     longitud = validez_longitud()
@@ -1683,7 +1684,7 @@ def correr_etapa_9():
  
     puntos = letras_buenas = letras_malas = "0"
     lista_jugadores_puntos = cargar_datos_iniciales(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas)
-    iterar_multijuego(lista_jugadores_puntos)
+    ganador = iterar_multijuego(lista_jugadores_puntos)
     # inicializar_puntaje_usuarios(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas )
     # jugar_multijugador()
 
