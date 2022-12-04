@@ -1146,19 +1146,20 @@ def jugar_multijugador_lista(perfil_jugador):
                 contador = ganaPierdo_multilinea(muestraParcial, palabraElegida, errores,puntaje)
                 if contador == 9:
                     puntaje += 10
+                print(f"Habria que almacenar estos datos o redefinirlos en el juego {pos} {jugador} {palabraElegida} {puntaje} {letrasBuenas} {letrasMalas} ")
                 lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
                 # print(f"El puntaje total es: {puntaje}")
                                    
             elif letra not in letrasMalas: 
                 punteo_error += 1
+                errores += 1    
                 total_puntajes_perdidos = punteo_error * puntos_por_desaciertos
-                puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
+                puntaje = Asignacion_Puntajes(total_puntajes_ganados, total_puntajes_perdidos)
                 letrasMalas = acumularLetras(letra, letrasMalas)
                 muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
                 printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
 
                 lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
-                errores += 1    
                 print(f"LA LISTA A PASAR ES {lista_pasar} y el contador vale : {errores}")
 
                 if errores == 8:
@@ -1662,7 +1663,40 @@ def agregar_gandores_perdedores(contador, lista_pasar):
 
     return None
 
+##########---------------------------------------------- FUNCIONES FINALIZADORAS --------------------------------------------###############
 
+def limpiar_ingresos():
+    """Funcion que abre el archivo ingresos\n
+    GB"""
+    archivo = open("00- ingresos.csv", "w")
+
+    archivo.close()
+
+
+def capturar_ganador(lista):
+
+    puntaje = []
+    for i in range (len(lista)):
+        puntaje.append(int(lista[i][3]))
+
+    maximo = max(puntaje)
+
+    # print(maximo)
+    # print(puntaje)
+
+    maximo = int(maximo)
+
+    ganador = ""
+
+    for i in range (len(lista)):
+        if int(lista[i][3]) == maximo:
+            ganador = str(lista[i][1])
+
+    print(f"El ganador es: \n\n{ganador}\n\n")
+
+    # print(lista)
+
+    return ganador
 
 ##########--------------------------------------------- BLOQUE QUE SERIA EL NUEVO MAIN ------------------------------------- #############################
 
@@ -1710,11 +1744,13 @@ def correr_etapa_9():
 # correr_etapa_9()
 
 
-def main():
+
+
+def bloque_principal():
     contador_partidas = 0
 
-    if contador_partidas == 0:
-        crear_ventana_de_inicio()
+    while contador_partidas != 1000:
+        # crear_ventana_de_inicio()
         jugadores = asignar_turnos_a_todos_los_jugadores()
         longitud = validez_longitud()
         if longitud == "": 
@@ -1724,24 +1760,35 @@ def main():
         lista_jugadores_puntos = cargar_datos_iniciales(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas)
 
         jugadores_posiciones_puntajes = iterar_multijuego(lista_jugadores_puntos)
+
+        ganador = capturar_ganador(jugadores_posiciones_puntajes)
+
+        # definir función que pise los valores del jugador, en la lista del juego.
+
         podio_ordenado = ordenar_lista(jugadores_posiciones_puntajes)
         lista_puntajes = obtener_maximo(jugadores_posiciones_puntajes)
         ganador = imprimir_ganador(lista_puntajes, podio_ordenado)
-        print(f"THE WINNER IS:   \n\n {ganador[0]}")
+
+        # print(f"THE WINNER IS:   \n\n {ganador[0]}")
         print("Jugamos otra vez???")
         contador_partidas += 1
     
-    jugar_de_nuevo = int(input("Ingrese cualquier tecla si quiere jugar \n0 o esc si quiere finalizar"))
+    jugar_de_nuevo = int(input("Ingrese cualquier tecla si quiere jugar \n0 o esc si quiere finalizar: "))
 
     while jugar_de_nuevo != "esc" or jugar_de_nuevo != "0" or jugar_de_nuevo != "esc":
-        # limpiar datos en ingresos
+        limpiar_ingresos()
         # correr juego nuevamente
-        # relevar datos del ganador.
-    
-    return None
-        
+        # relevar datos del ganador
 
-main()
+        break
+
+    return None
+
+    
+    
+
+
+bloque_principal()
 
 
 
