@@ -12,6 +12,7 @@ def generar_diccionario(lista):
     return sorted(diccionario,key = lambda item:item[0])
 
 def filtrador_de_palabras(archivo_texto,longitud):
+    default = '999999'
     archivo = open(archivo_texto)
     linea = leer_linea(archivo_texto,default)
     lista_palabras = []
@@ -142,7 +143,7 @@ def palabras(archivo1, archivo2, archivo3, archivo4,longitud):
     archivo4.close()
 
 
-    default = '999999'
+    
     archivo_1 = open ("Cuentos.txt", "r")
     archivo_2 = open ("La araña negra - tomo 1.txt", "r")
     archivo_3 = open ("Las 1000 Noches y 1 Noche.txt", "r")

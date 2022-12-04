@@ -1036,7 +1036,7 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
                         # print(f"lista de exluidos: {excluidos} CANT DE EXLUIDOS {len(excluidos)}")
                         if len(excluidos) == cant_jugadores:
                             print("\n\n\nGANO LA MAQUINA \n\n\n")
-                            jugadores_posiciones_puntajes.append(100, "Maquina", "", 100, "","","")
+                            jugadores_posiciones_puntajes.append([100, "Maquina", "", 100, "","",""])
                             llave_1 = True
                     elif resultados_evaluar[6] == 1:
                         # cargar_datos_en_archivo_ganador_partida(resultados_evaluar)
@@ -1124,6 +1124,7 @@ def jugar_multijugador_lista(perfil_jugador):
 
     # llave_2 para poder salir del else con la modificación de la parte10
     llave_2 = False
+    punteo_error = 0
 
     while contador <= cant_intentos and llave_2 != True:
 
@@ -1149,20 +1150,24 @@ def jugar_multijugador_lista(perfil_jugador):
                 # print(f"El puntaje total es: {puntaje}")
                                    
             elif letra not in letrasMalas: 
-                errores += 1
-                total_puntajes_perdidos = errores * puntos_por_desaciertos
+                punteo_error += 1
+                total_puntajes_perdidos = punteo_error * puntos_por_desaciertos
                 puntaje = Asignacion_Puntajes( total_puntajes_ganados, total_puntajes_perdidos)
                 letrasMalas = acumularLetras(letra, letrasMalas)
                 muestraParcial = muestraPalabraEncriptada(letrasBuenas, palabraElegida)
                 printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
 
                 lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
+                errores += 1    
                 print(f"LA LISTA A PASAR ES {lista_pasar} y el contador vale : {errores}")
 
                 if errores == 8:
                     puntaje -= 5
+                elif errores == 7:
                     lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
-                    # llave_2 = False
+                    print("\n\n\n ULTIMA CHANCE \n\n\n")
+
+
                 # pos,jugador, palabraElegida, puntaje, letrasBuenas, letrasMalas
                 llave_2 = True
 
@@ -1175,7 +1180,7 @@ def jugar_multijugador_lista(perfil_jugador):
             contador = 10
             print("HAS ABANDONADO LA PARTIDA \n")
 
-        print (f"LLEGO A ESTE INTERVALO LOS ERRORES SON {errores}")    
+        # print (f"LLEGO A ESTE INTERVALO LOS ERRORES SON {errores}")    
         
         if contador == 9:
             lista_pasar.append(1)
@@ -1702,4 +1707,45 @@ def correr_etapa_9():
 
     return None
 
-correr_etapa_9()
+# correr_etapa_9()
+
+
+def main():
+    contador_partidas = 0
+
+    if contador_partidas == 0:
+        crear_ventana_de_inicio()
+        jugadores = asignar_turnos_a_todos_los_jugadores()
+        longitud = validez_longitud()
+        if longitud == "": 
+            longitud = int(randint(5,9))
+        nombres_posiciones_palabraClave = consolidar_posiciones_y_palabras(jugadores, longitud)
+        puntos = letras_buenas = letras_malas = "0"
+        lista_jugadores_puntos = cargar_datos_iniciales(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas)
+
+        jugadores_posiciones_puntajes = iterar_multijuego(lista_jugadores_puntos)
+        podio_ordenado = ordenar_lista(jugadores_posiciones_puntajes)
+        lista_puntajes = obtener_maximo(jugadores_posiciones_puntajes)
+        ganador = imprimir_ganador(lista_puntajes, podio_ordenado)
+        print(f"THE WINNER IS:   \n\n {ganador[0]}")
+        print("Jugamos otra vez???")
+        contador_partidas += 1
+    
+    jugar_de_nuevo = int(input("Ingrese cualquier tecla si quiere jugar \n0 o esc si quiere finalizar"))
+
+    while jugar_de_nuevo != "esc" or jugar_de_nuevo != "0" or jugar_de_nuevo != "esc":
+        # limpiar datos en ingresos
+        # correr juego nuevamente
+        # relevar datos del ganador.
+    
+    return None
+        
+
+main()
+
+
+
+
+
+
+
