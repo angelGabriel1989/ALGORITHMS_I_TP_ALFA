@@ -1011,7 +1011,7 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
     # archivo = open("00- puntajes_juego.csv")
     llave_1 = False
     i = 0
-    max_movimientos =  20
+    max_movimientos =  50
     llave_2 = 0
     while llave_1 != True and llave_2 < max_movimientos:
 
@@ -1024,16 +1024,20 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
                 resultados_evaluar = jugar_multijugador_lista(perfil_jugador)
                 jugadores_posiciones_puntajes[i] = resultados_evaluar
                 print(jugadores_posiciones_puntajes[i])
-
-        if len(resultados_evaluar) == 7:
-            if resultados_evaluar[6] == 3:
-                excluidos.append(resultados_evaluar[1])
-                print(f"lista de exluidos: {excluidos}")
-            elif resultados_evaluar[6] == 1:
-                # cargar_datos_en_archivo_ganador_partida(resultados_evaluar)
-                print(f"\n\n JUGADORES POSICIONES PUNTAJES \n\n {jugadores_posiciones_puntajes}")
-                podio_ordenado = ordenar_lista(jugadores_posiciones_puntajes)
-                llave_1 = True
+                # PRUEBA POSIBLE DE MEJORA 
+                # VERIFICAR 
+                if len(resultados_evaluar) == 7:
+                    if resultados_evaluar[6] == 3:
+                        excluidos.append(resultados_evaluar[1])
+                        print(f"lista de exluidos: {excluidos} CANT DE EXLUIDOS {len(excluidos)}")
+                        if len(excluidos) == cant_jugadores:
+                            print("\n\n\nGANO LA MAQUINA CAGONES\n\n\n")
+                            llave_1 = True
+                    elif resultados_evaluar[6] == 1:
+                        # cargar_datos_en_archivo_ganador_partida(resultados_evaluar)
+                        print(f"\n\n JUGADORES POSICIONES PUNTAJES \n\n {jugadores_posiciones_puntajes}")
+                        podio_ordenado = ordenar_lista(jugadores_posiciones_puntajes)
+                        llave_1 = True
 
         i += 1
 
@@ -1041,7 +1045,7 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
             i = 0
         llave_2 += 1
 
-    imprimir_ganador(podio_ordenado)     
+    imprimir_tabla_ganador(podio_ordenado)     
 
     return None 
 
@@ -1052,7 +1056,7 @@ def ordenar_lista(podio):
     devolver = {}
     for i in range (len(podio)):
         print(f" {podio[i][0]} {podio[i][1]} {podio[i][2]}" )
-        devolver[podio[i][1]] = [podio[i][2],podio[i][3], podio[i][4], podio[i][5] ]
+        devolver[podio[i][1]] = [podio[i][2],int(podio[i][3]), podio[i][4], podio[i][5] ]
 
     print(devolver)       
     return devolver
@@ -1062,7 +1066,7 @@ def cargar_datos_en_archivo_ganador_partida(podio):
 
     print(f"\n\n\n{podio}\n\n\n")
 
-    for i in sorted(podio, key = lambda i : int(podio[i][3]), reverse = True):
+    for i in sorted(podio, key = lambda i : podio[i][1], reverse = True):
         archivo.write(f"{podio[i][0]},{podio[i][1]},{podio[i][2]},{podio[i][3]},{podio[i][4]},{podio[i][5]}\n ")
 
     archivo.close
@@ -1070,11 +1074,13 @@ def cargar_datos_en_archivo_ganador_partida(podio):
 
 
 def imprimir_tabla_ganador(podio):
+
+    print(f" \n\n\n PODIO \n {podio}\n")
     
-    for i in sorted(podio, key = lambda i : podio[i][3], Reverse = True):
+    for i in sorted(podio, key = lambda i : podio[i][1], reverse = True):
         print(f"{i} {podio[i]} ")
     
-    # print(f"Los puntajes son: {puntaje}")
+    return None
 
 
 
