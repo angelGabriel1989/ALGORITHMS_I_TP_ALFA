@@ -994,10 +994,14 @@ def cargar_datos_iniciales(nombres_pos_palabraClave, puntos, letras_B, letras_M)
 
     for i in sorted(nombres_pos_palabraClave, key = lambda i : nombres_pos_palabraClave[i]):
         jugadores_palabra_puntaje.append([nombres_pos_palabraClave[i][0],i,nombres_pos_palabraClave[i][1],puntos,letras_B,letras_M])
-        print(jugadores_palabra_puntaje)
+        # print(jugadores_palabra_puntaje)
 
 
     return jugadores_palabra_puntaje
+
+
+
+
 
 def iterar_multijuego(jugadores_posiciones_puntajes):
     """Función que toma realiza la lógica de juego multilinea\n 
@@ -1011,7 +1015,7 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
     # archivo = open("00- puntajes_juego.csv")
     llave_1 = False
     i = 0
-    max_movimientos =  50
+    max_movimientos =  120
     llave_2 = 0
     while llave_1 != True and llave_2 < max_movimientos:
 
@@ -1023,7 +1027,7 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
             else:
                 resultados_evaluar = jugar_multijugador_lista(perfil_jugador)
                 jugadores_posiciones_puntajes[i] = resultados_evaluar
-                print(jugadores_posiciones_puntajes[i])
+                # print(jugadores_posiciones_puntajes[i])
                 # PRUEBA POSIBLE DE MEJORA 
                 # VERIFICAR 
                 if len(resultados_evaluar) == 7:
@@ -1031,7 +1035,7 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
                         excluidos.append(resultados_evaluar[1])
                         print(f"lista de exluidos: {excluidos} CANT DE EXLUIDOS {len(excluidos)}")
                         if len(excluidos) == cant_jugadores:
-                            print("\n\n\nGANO LA MAQUINA CAGONES\n\n\n")
+                            print("\n\n\nGANO LA MAQUINA \n\n\n")
                             llave_1 = True
                     elif resultados_evaluar[6] == 1:
                         # cargar_datos_en_archivo_ganador_partida(resultados_evaluar)
@@ -1045,20 +1049,40 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
             i = 0
         llave_2 += 1
 
+    lista_puntajes = obtener_maximo(jugadores_posiciones_puntajes)
+    """
+    Función que le llega una lista de los jugadores\n
+    Devuelve el máximo de los puntos\n
+    GB"""
+    #ELEMENTO 3 de lista es el puntaje
     imprimir_tabla_ganador(podio_ordenado)     
 
-    return None 
+    maximo = 0
+
+    for i in range (len(podio_ordenado)):
+        if int(podio_ordenado[i][3]) > maximo:
+            maximo = podio_ordenado[i][3]
+
+
+    return maximo 
+
+def obtener_maximo(lista):
+    print(f"Llega acá la siguiente orden: {lista}")
+
+
+
+    return None
 
 def ordenar_lista(podio):
 
-    print(f"Ingreso al podio {podio}")
+    # print(f"Ingreso al podio {podio}")
 
     devolver = {}
     for i in range (len(podio)):
-        print(f" {podio[i][0]} {podio[i][1]} {podio[i][2]}" )
+        # print(f" {podio[i][0]} {podio[i][1]} {podio[i][2]}" )
         devolver[podio[i][1]] = [podio[i][2],int(podio[i][3]), podio[i][4], podio[i][5] ]
 
-    print(devolver)       
+    # print(devolver)       
     return devolver
 
 def cargar_datos_en_archivo_ganador_partida(podio):
@@ -1145,7 +1169,7 @@ def jugar_multijugador_lista(perfil_jugador):
                 lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
                 if contador == 8:
                     puntaje -= 5
-                pos,jugador, palabraElegida, puntaje, letrasBuenas, letrasMalas
+                # pos,jugador, palabraElegida, puntaje, letrasBuenas, letrasMalas
                 llave_2 = True
 
             else:
@@ -1478,7 +1502,7 @@ def cargar_datos_puntajes_juego(lista):
         linea = lineas(archivo)
     archivo.close()
 
-    print(f"lista maestra: {lista_maestra}")
+    # print(f"lista maestra: {lista_maestra}")
 
     # ABRO EL ARCHIVO PARA PISARLO
     archivo = open("00- puntajes_juego.csv", "w") ########### 
