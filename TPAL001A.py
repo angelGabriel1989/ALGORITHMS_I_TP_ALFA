@@ -1758,7 +1758,10 @@ def adosar_valores_partidas(acumulador_puntajes_por_usuario, jugadores_posicione
                 acumulador_puntajes_por_usuario[clave].append([jugador[2], int(jugador[3]),jugador[4], jugador[5]])
     
     for i in sorted(acumulador_puntajes_por_usuario, key = lambda i : acumulador_puntajes_por_usuario[i][1], reverse = True):
-        
+
+        # falta mejorar codigo aqui 
+        pass
+
 
 
 
