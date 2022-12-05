@@ -1058,7 +1058,7 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
     while llave_1 != True and llave_2 < max_movimientos:
 
         perfil_jugador = jugadores_posiciones_puntajes[i]
-        # print(perfil_jugador)
+        print(perfil_jugador) # Bloquear posición recordar
         if perfil_jugador:
             if (perfil_jugador[1]) in excluidos:
                 pass
@@ -1183,7 +1183,7 @@ def jugar_multijugador_lista(perfil_jugador):
     # print(f"\n\n EL PERFIL DEL JUGADOR QUE ENTRO ES: {perfil_jugador}")
 
     print("ES EL TURNO DE:{0:8}".format(jugador.upper()))
-    print(f"Palabra a adivinar: {muestraParcial.upper()}  Aciertos: {aciertos}  Desaciertos: {errores}\n\n\n")
+    print(f"Palabra a adivinar: {muestraParcial.upper()}  Aciertos: {aciertos} - {letrasBuenas} Desaciertos: {errores} - {letrasMalas}\n\n\n")
 
     # llave_2 para poder salir del else con la modificación de la parte10
     llave_2 = False
@@ -1233,7 +1233,7 @@ def jugar_multijugador_lista(perfil_jugador):
                 printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
 
                 lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
-                # print(f"LA LISTA A PASAR ES {lista_pasar} y el contador vale : {errores}")
+                print(f"LA LISTA A PASAR ES {lista_pasar} y el contador vale : {errores}")
 
                 if errores == 8:
                     puntaje -= 5
@@ -1722,7 +1722,7 @@ def bloque_principal_juego():
         lista_puntajes = obtener_maximo(jugadores_posiciones_puntajes)
         ganador= imprimir_ganador(lista_puntajes, podio_ordenado)
 
-        print(f"ganadores es : {ganador}")
+        # print(f"ganadores es : {ganador}")
 
         # print(ganador)
         if partidas == 0:
@@ -1750,7 +1750,17 @@ def bloque_principal_juego():
 def adosar_valores_partidas(acumulador_puntajes_por_usuario, jugadores_posiciones_puntajes):
 
     print(acumulador_puntajes_por_usuario)
-    print(jugadores_posiciones_puntajes)
+    print(f"Hay que combinar las posiciones estás {jugadores_posiciones_puntajes}")
+
+    for clave in range (len(acumulador_puntajes_por_usuario)):
+        for jugador in jugadores_posiciones_puntajes:
+            if clave == jugador[1]:
+                acumulador_puntajes_por_usuario[clave].append([jugador[2], int(jugador[3]),jugador[4], jugador[5]])
+    
+    for i in sorted(acumulador_puntajes_por_usuario, key = lambda i : acumulador_puntajes_por_usuario[i][1], reverse = True):
+        
+
+
 
 
 
