@@ -35,6 +35,9 @@ def asignar_turnos_a_todos_los_jugadores_menos_ganador(ganador):
     #Agrego el ganador con su turno
     if not lista_ganador[0] in diccionario_jugadores_con_turnos:
         diccionario_jugadores_con_turnos[lista_ganador[0]]=lista_ganador[1]
+    for clave in diccionario_jugadores_con_turnos:
+        print(f"El jugador {clave} tiene turno numero {diccionario_jugadores_con_turnos[clave]}")
+    print("A jugar!")
     return diccionario_jugadores_con_turnos
 
 
@@ -47,4 +50,4 @@ def leer_linea(archivo_a_estudiar):
     return devolver
 
 
-print(asignar_turnos_a_todos_los_jugadores_menos_ganador("Gaby_2007"))
+#print(asignar_turnos_a_todos_los_jugadores_menos_ganador("Gaby_2007"))
