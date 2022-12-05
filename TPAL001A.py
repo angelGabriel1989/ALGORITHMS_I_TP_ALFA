@@ -956,8 +956,6 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
     import random
     dicc_valido = diccionarValido() # esta función es la que me retorna palabras candidatas
 
-    # print(f"{longitud} tipo: {type(longitud)}")
-
     numero_jugadores = int(len(jugadores))
 
     # RECORRIENDO DICCIONARIO Y RECORTANDO PALABRAS CANDIDATAS PARA JUGAR
@@ -970,11 +968,8 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
             i += 1
         else:
             i += 1
-
-    # print(f"diccionario recortado quedo : {dicc_truncado}")        
   
     palabras_elegidas = random.sample(dicc_truncado, numero_jugadores)
-    # print(f"las palabras elegidas son: {palabras_elegidas}")
 
     devolver = {}
     acceso = 0
@@ -983,7 +978,7 @@ def consolidar_posiciones_y_palabras(jugadores, longitud):
         devolver[clave] = (jugadores[i], palabras_elegidas[acceso])
 
         acceso += 1
-    # print(f"El retorno de está función es: {devolver}")   
+
     return devolver
 
 ####################### ------------------------------------------COMENZANDO ETAPA 9-------------------------------------- ##################################
@@ -1049,7 +1044,7 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
     Hecha por GB
     """
 
-    print(f"Jugadores _ POSIONES _ PUNTAJES = {jugadores_posiciones_puntajes}")
+    # print(f"Jugadores _ POSIONES _ PUNTAJES = {jugadores_posiciones_puntajes}")
     
     # jugadores_por_posicion = devolver_lista_jugadores()
     excluidos = []
@@ -1063,40 +1058,25 @@ def iterar_multijuego(jugadores_posiciones_puntajes):
     while llave_1 != True and llave_2 < max_movimientos:
 
         perfil_jugador = jugadores_posiciones_puntajes[i]
-        print(perfil_jugador)
+        # print(perfil_jugador)
         if perfil_jugador:
             if (perfil_jugador[1]) in excluidos:
                 pass
             else:
                 resultados_evaluar = jugar_multijugador_lista(perfil_jugador)
-                # piso el retorno que me brindo al jugar
-                # jugadores_posiciones_puntajes[i] = resultados_evaluar
 
-                print(f"Salida importane posible bloque de instrucción{jugadores_posiciones_puntajes}")
-
-
-                # print(jugadores_posiciones_puntajes[i])
-                # PRUEBA POSIBLE DE MEJORA 
-                # VERIFICAR 
                 if len(resultados_evaluar) == 7:
                     if resultados_evaluar[6] == 3 or resultados_evaluar[6] == 2:
                         excluidos.append(resultados_evaluar[1])
-                        # print(f"lista de exluidos: {excluidos} CANT DE EXLUIDOS {len(excluidos)}")
                         if len(excluidos) == cant_jugadores:
                             print("\n\n\nGANO LA MAQUINA \n\n\n")
                             jugadores_posiciones_puntajes.append([100, "Maquina", "", 100, "","",""])
                             llave_1 = True
                     elif resultados_evaluar[6] == 1:
-                        # cargar_datos_en_archivo_ganador_partida(resultados_evaluar)
                         jugadores_posiciones_puntajes[i]  = resultados_evaluar
-                        print(f"\n\n JUGADORES POSICIONES PUNTAJES \n\n {jugadores_posiciones_puntajes}")
                         llave_1 = True
                 elif len(resultados_evaluar) == 6:
-                    print("Hay que pisar los datos en el archivo origen:")
-                    print(f"Los resultados a EVALUAR Y PISAR SON: \n {resultados_evaluar} \n hay que concatenarlos con {jugadores_posiciones_puntajes}")
                     jugadores_posiciones_puntajes[i] = resultados_evaluar
-
-
                     pass
 
         i += 1
@@ -1132,6 +1112,22 @@ def ordenar_lista(podio):
 
     # print(devolver)       
     return devolver
+
+
+
+def acumular_valores_partidas(podio):
+
+    print(f"\nIngreso al podio {podio}")
+
+    devolver = {}
+    for i in range (len(podio)):
+        # print(f" {podio[i][0]} {podio[i][1]} {podio[i][2]}" )
+        devolver[podio[i][1]] = [[podio[i][2],int(podio[i][3]), podio[i][4], podio[i][5] ]]
+    
+    # print(devolver)       
+    return devolver
+
+
 
 def cargar_datos_en_archivo_ganador_partida(podio):
     archivo = open("00- puntajes_juego.csv", "w")
@@ -1237,13 +1233,13 @@ def jugar_multijugador_lista(perfil_jugador):
                 printeoAciertoError(letra, muestraParcial, aciertos, errores, palabraElegida, letrasMalas)
 
                 lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
-                print(f"LA LISTA A PASAR ES {lista_pasar} y el contador vale : {errores}")
+                # print(f"LA LISTA A PASAR ES {lista_pasar} y el contador vale : {errores}")
 
                 if errores == 8:
                     puntaje -= 5
                 elif errores == 7:
                     lista_pasar = [int(pos), str(jugador), str(palabraElegida), str(puntaje), str(letrasBuenas), str(letrasMalas)]
-                    print("\n\n\n ULTIMA CHANCE \n\n\n")
+                    # print("\n\n\n ULTIMA CHANCE \n\n\n")
 
 
                 # pos,jugador, palabraElegida, puntaje, letrasBuenas, letrasMalas
@@ -1316,7 +1312,7 @@ def cargar_datos_ganador(): # PODRIA RECIBIR UN PARAMETRO CON UN BLOQUE IF
 
 def imprimir_ganador(puntos, podio):
 
-    print(f"\n\n\n\n PODIO ORDENADO \n {podio}\n\n\n")
+    # print(f"\n\n\n\n PODIO ORDENADO \n {podio}\n\n\n")
 
     valor = -100
 
@@ -1627,7 +1623,7 @@ def capturar_ganador(lista):
         if int(lista[i][3]) == maximo:
             ganador = str(lista[i][1])
 
-    print(f"El ganador es: \n\n{ganador}\n\n")
+    # print(f"El ganador es: \n\n{ganador}\n\n")
 
     # print(lista)
 
@@ -1682,7 +1678,7 @@ def correr_etapa_9():
 
 def bloque_principal_juego():
 
-    partida = 0
+    partidas = 0
     ganador_ronda = ""
 
     i = False # llave de control de iteraciones
@@ -1690,15 +1686,14 @@ def bloque_principal_juego():
     while i != True:
 
         #### verifico si hay que limpiar o no los registros. 
-
         ### posible mejora de código incoportando consultas como: eliminar jugador 
-        if partida == 0 and ganador_ronda == "":
+        if partidas == 0 and ganador_ronda == "":
             # limpiar_ingresos()
             crear_ventana_de_inicio()
         else:
             pass
 
-        if partida == 0 or ganador_ronda == "Maquina":
+        if partidas == 0 or ganador_ronda == "Maquina":
             jugadores = asignar_turnos_a_todos_los_jugadores()
         else:
             jugadores = asignar_turnos_a_todos_los_jugadores_menos_ganador(ganador_ronda)
@@ -1708,36 +1703,58 @@ def bloque_principal_juego():
         if longitud == "":
             longitud = int(randint(5,9))
         
-    
         # Función que carga los datos para poder inicializar el juego
         lista_jugadores_puntos = cargar_datos_inicio_juego(jugadores, longitud)
 
         jugadores_posiciones_puntajes = iterar_multijuego(lista_jugadores_puntos)
 
-        
-        print(f"\n\n\n\n JUGADORES_ POSICIONES _ PUNTAJES _ ALMACENAR EN UN DICCIONAR \n\n\n {jugadores_posiciones_puntajes}")
+        # print(f"\n\n\n\n JUGADORES_ POSICIONES _ PUNTAJES _ ALMACENAR EN UN DICCIONAR \n\n\n {jugadores_posiciones_puntajes}")
 
         ganador_ronda = capturar_ganador(jugadores_posiciones_puntajes)
 
         # definir función que pise los valores del jugador, en la lista del juego.
 
-
         podio_ordenado = ordenar_lista(jugadores_posiciones_puntajes)
+
+        # print(f"podio ordenado: \n{podio_ordenado}")
+
+
         lista_puntajes = obtener_maximo(jugadores_posiciones_puntajes)
         ganador= imprimir_ganador(lista_puntajes, podio_ordenado)
 
+        print(f"ganadores es : {ganador}")
 
-        partida += 1
+        # print(ganador)
+        if partidas == 0:
+            # Genero el diccionario que acumula las posiciones
+            acumulador_puntajes_por_usuario = acumular_valores_partidas(jugadores_posiciones_puntajes)
+        else:
+            acumulador_puntajes_varias_partidas = adosar_valores_partidas(acumulador_puntajes_por_usuario, jugadores_posiciones_puntajes)
 
-        a = True
-
-        while a != False:
-            consulta = input("Desea seguir jugando??? \nSI (cualquier tecla)\nNO(escriba esc o 0")
-            if consulta == "esc" or consulta == "0":
-                a = False
-
+        
+        if partidas == 0:
+            print(acumulador_puntajes_por_usuario)
+        else:
+            print(acumulador_puntajes_varias_partidas)
 
 
+        partidas += 1
+
+        consulta = input("Desea seguir jugando??? \nSI (cualquier tecla)\nNO(escriba esc o 0")
+        if consulta == "esc" or consulta == "0":
+            i = True
+
+    return None
+
+
+def adosar_valores_partidas(acumulador_puntajes_por_usuario, jugadores_posiciones_puntajes):
+
+    print(acumulador_puntajes_por_usuario)
+    print(jugadores_posiciones_puntajes)
+
+
+
+    return None
 
 def cargar_datos_inicio_juego(jugadores, longitud):
 
@@ -1746,63 +1763,6 @@ def cargar_datos_inicio_juego(jugadores, longitud):
     lista_inicial = cargar_datos_iniciales(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas)
 
     return lista_inicial
-
-
-
-def bloque_principal():
-
-    crear_ventana_de_inicio()
-
-    contador_partidas = 0
-
-    ganador = ""
-
-    while contador_partidas != 1000:
-        
-        # crear_ventana_de_inicio()
-
-        if ganador == "" or ganador == "Maquina":
-            jugadores = asignar_turnos_a_todos_los_jugadores()
-        else:
-            jugadores = asignar_turnos_a_todos_los_jugadores_menos_ganador(ganador)
-
-        longitud = validez_longitud()
-        if longitud == "": 
-            longitud = int(randint(5,9))
-
-
-
-        nombres_posiciones_palabraClave = consolidar_posiciones_y_palabras(jugadores, longitud)
-        puntos = letras_buenas = letras_malas = ""
-        lista_jugadores_puntos = cargar_datos_iniciales(nombres_posiciones_palabraClave,puntos,letras_buenas ,letras_malas)
-
-        jugadores_posiciones_puntajes = iterar_multijuego(lista_jugadores_puntos)
-
-        ganador = capturar_ganador(jugadores_posiciones_puntajes)
-
-        # definir función que pise los valores del jugador, en la lista del juego.
-
-        podio_ordenado = ordenar_lista(jugadores_posiciones_puntajes)
-        lista_puntajes = obtener_maximo(jugadores_posiciones_puntajes)
-        ganador = imprimir_ganador(lista_puntajes, podio_ordenado)
-
-        # print(f"THE WINNER IS:   \n\n {ganador[0]}")
-        print("Jugamos otra vez???")
-        contador_partidas += 1
-    
-    jugar_de_nuevo = int(input("Ingrese cualquier tecla si quiere jugar \n0 o esc si quiere finalizar: "))
-
-    while jugar_de_nuevo != "esc" or jugar_de_nuevo != "0" or jugar_de_nuevo != "esc":
-        limpiar_ingresos()
-        # correr juego nuevamente
-        # relevar datos del ganador
-
-        break
-
-    return None
-
-    
-    
 
 
 bloque_principal_juego()
