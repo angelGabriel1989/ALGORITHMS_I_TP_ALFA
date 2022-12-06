@@ -12,6 +12,7 @@ def generar_diccionario(lista):
     return sorted(diccionario.items(),key = lambda item:item[0])
 
 def filtrador_de_palabras(archivo_texto,default):
+    longitud_minima = 5
     archivo = open(archivo_texto)
     linea = leer_linea(archivo_texto,default)
     lista_palabras = []
@@ -20,7 +21,7 @@ def filtrador_de_palabras(archivo_texto,default):
             palabra = linea[posicion]
             #Aplano la palabra
             palabra = eliminar_acentuados(palabra)
-            if palabra.isalpha():
+            if palabra.isalpha() and len(palabra) >= longitud_minima:
                 lista_palabras.append(palabra.lower())
         linea = leer_linea(archivo_texto)
     archivo.close()
@@ -83,9 +84,12 @@ def palabras_a_jugar(archivo1, archivo2, archivo3, archivo4):
     archivo2.close()
     archivo3.close()
 
-    #Solo queda abierto archivo_4 -> "palabras.txt"
+    apareo(listado_palabras_archivo1,listado_palabras_archivo2,listado_palabras_archivo3, archivo4)
 
-    # ---------------------- "APAREO" ----------------------------------- #
+    return palabras_a_jugar
+
+
+def apareo(listado_palabras_archivo1, listado_palabras_archivo2, listado_palabras_archivo3, archivo):
     long_archivo1 = len(listado_palabras_archivo1)-1
     long_archivo2 = len(listado_palabras_archivo2)-1
     long_archivo3 = len(listado_palabras_archivo3)-1
@@ -108,16 +112,17 @@ def palabras_a_jugar(archivo1, archivo2, archivo3, archivo4):
             acumulador_pal_arc1 = int(listado_palabras_archivo3[lista_variables_corte_control[1]])
             lista_variables_corte_control[2] +=1
         #Una vez termine de contar cuantas veces se repite la palabra en cada archivo lo escribe en archivo_4
-        archivo4.append(str(minimo) + "," + str(acumulador_pal_arc1) + ","+ str(acumulador_pal_arc2) +  "," + str(acumulador_pal_arc3) + "\n")
-    archivo4.close()
-    return palabras_a_jugar
+        archivo.append(str(minimo) + "," + str(acumulador_pal_arc1) + ","+ str(acumulador_pal_arc2) +  "," + str(acumulador_pal_arc3) + "\n")
+    archivo.close()
 
-def main():
+
+def principal():
     default = '999999'
     archivo_1 = open ("Cuentos.txt", "r")
     archivo_2 = open ("La araña negra - tomo 1.txt", "r")
     archivo_3 = open ("Las 1000 Noches y 1 Noche.txt", "r")
     archivo_4 = open("palabras.txt","a")
-    palabras_a_jugar(archivo_1,archivo_2,archivo_3,archivo_4)
+    listado_final = palabras_a_jugar(archivo_1,archivo_2,archivo_3,archivo_4)
+    return listado_final
 
-main()
+principal()
